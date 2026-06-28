@@ -1,0 +1,812 @@
+<!DOCTYPE html>
+<html lang="he" dir="rtl">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>לוח בקרה — ASSET-LINK</title>
+  <link rel="stylesheet" href="css/styles.css">
+  <style>
+    body { background: var(--bg); }
+
+    .dash-topbar {
+      position: fixed;
+      inset: 0 0 auto 0;
+      height: var(--nav-h);
+      background: white;
+      border-bottom: 1px solid var(--border-light);
+      z-index: 1000;
+      display: flex;
+      align-items: center;
+    }
+
+    .dash-topbar-inner {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      width: 100%;
+      padding: 0 24px;
+      gap: 20px;
+    }
+
+    .dash-user {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      cursor: pointer;
+    }
+
+    .dash-user-avatar {
+      width: 36px; height: 36px;
+      border-radius: var(--r-full);
+      background: var(--primary-100);
+      overflow: hidden;
+    }
+
+    .dash-user-name { font-size: 0.9rem; font-weight: 600; color: var(--n-900); }
+    .dash-user-role { font-size: 0.775rem; color: var(--n-400); }
+
+    .dash-notif {
+      position: relative;
+      width: 38px; height: 38px;
+      border-radius: var(--r-sm);
+      border: 1px solid var(--border);
+      display: flex; align-items: center; justify-content: center;
+      font-size: 1.125rem;
+      cursor: pointer;
+      background: white;
+      transition: var(--ease);
+    }
+    .dash-notif:hover { background: var(--n-50); }
+
+    .notif-badge {
+      position: absolute;
+      top: 4px; left: 4px;
+      width: 16px; height: 16px;
+      background: var(--error);
+      color: white;
+      border-radius: var(--r-full);
+      font-size: 0.65rem;
+      font-weight: 800;
+      display: flex; align-items: center; justify-content: center;
+    }
+
+    .dash-content {
+      padding-top: var(--nav-h);
+      display: flex;
+      min-height: 100vh;
+    }
+
+    /* Sidebar */
+    .dash-sidebar {
+      width: 256px;
+      background: white;
+      border-left: 1px solid var(--border-light);
+      padding: 20px 0;
+      flex-shrink: 0;
+      position: sticky;
+      top: var(--nav-h);
+      height: calc(100vh - var(--nav-h));
+      overflow-y: auto;
+    }
+
+    .sidebar-logo {
+      padding: 4px 20px 20px;
+      border-bottom: 1px solid var(--border-light);
+      margin-bottom: 12px;
+    }
+
+    .sidebar-section-label {
+      font-size: 0.725rem;
+      font-weight: 700;
+      color: var(--n-400);
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+      padding: 12px 24px 6px;
+    }
+
+    .dash-nav-item {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      padding: 10px 20px;
+      font-size: 0.9375rem;
+      font-weight: 500;
+      color: var(--n-600);
+      cursor: pointer;
+      transition: var(--ease);
+      text-decoration: none;
+      border-right: 3px solid transparent;
+      margin: 2px 0;
+      border-radius: 0 var(--r-sm) var(--r-sm) 0;
+    }
+
+    .dash-nav-item:hover { color: var(--primary); background: var(--primary-50); }
+    .dash-nav-item.active {
+      color: var(--primary);
+      background: var(--primary-50);
+      font-weight: 700;
+      border-right-color: var(--primary);
+    }
+
+    .nav-item-icon { font-size: 1.1rem; width: 22px; text-align: center; flex-shrink: 0; }
+    .nav-item-badge {
+      margin-right: auto;
+      background: var(--error);
+      color: white;
+      border-radius: var(--r-full);
+      font-size: 0.7rem;
+      font-weight: 800;
+      padding: 1px 7px;
+      min-width: 18px;
+      text-align: center;
+    }
+
+    .nav-item-badge.green { background: var(--success); }
+
+    /* Main area */
+    .dash-main {
+      flex: 1;
+      padding: 32px 36px;
+      min-width: 0;
+    }
+
+    .dash-header {
+      display: flex;
+      align-items: flex-start;
+      justify-content: space-between;
+      margin-bottom: 28px;
+      gap: 16px;
+      flex-wrap: wrap;
+    }
+
+    .dash-greeting { font-size: 1.625rem; font-weight: 900; color: var(--n-900); letter-spacing: -0.02em; }
+    .dash-date { font-size: 0.9rem; color: var(--n-500); margin-top: 4px; }
+
+    /* KPI cards */
+    .kpi-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 16px; margin-bottom: 28px; }
+
+    .kpi-card {
+      background: white;
+      border-radius: var(--r-lg);
+      padding: 22px 24px;
+      border: 1px solid var(--border-light);
+      position: relative;
+      overflow: hidden;
+    }
+
+    .kpi-card::before {
+      content: '';
+      position: absolute;
+      top: 0; right: 0;
+      width: 4px;
+      height: 100%;
+      background: var(--primary-400);
+    }
+
+    .kpi-card.orange::before { background: var(--warning); }
+    .kpi-card.blue::before   { background: #3B82F6; }
+    .kpi-card.green::before  { background: var(--success); }
+
+    .kpi-icon { font-size: 1.5rem; margin-bottom: 12px; }
+    .kpi-label { font-size: 0.8125rem; font-weight: 500; color: var(--n-500); margin-bottom: 6px; }
+    .kpi-value { font-size: 1.875rem; font-weight: 900; color: var(--n-900); letter-spacing: -0.03em; line-height: 1; }
+
+    .kpi-trend {
+      display: inline-flex;
+      align-items: center;
+      gap: 4px;
+      margin-top: 8px;
+      font-size: 0.8rem;
+      font-weight: 700;
+      padding: 3px 8px;
+      border-radius: var(--r-full);
+    }
+
+    .kpi-trend.up   { color: var(--success); background: var(--success-light); }
+    .kpi-trend.down { color: var(--error); background: var(--error-light); }
+    .kpi-trend.neutral { color: var(--n-600); background: var(--n-100); }
+
+    /* Demand map placeholder */
+    .demand-map {
+      background: white;
+      border-radius: var(--r-xl);
+      border: 1px solid var(--border-light);
+      overflow: hidden;
+      position: relative;
+    }
+
+    .map-header {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 20px 24px;
+      border-bottom: 1px solid var(--border-light);
+    }
+
+    .map-body {
+      height: 320px;
+      background: linear-gradient(135deg, #e8f5e9 0%, #c8e6c9 40%, #a5d6a7 70%, #81c784 100%);
+      position: relative;
+      overflow: hidden;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+
+    .map-israel-outline {
+      font-size: 4rem;
+      opacity: 0.15;
+      position: absolute;
+    }
+
+    .map-demand-bubble {
+      position: absolute;
+      border-radius: var(--r-full);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 0.75rem;
+      font-weight: 800;
+      color: white;
+      cursor: pointer;
+      transition: transform 0.2s;
+      box-shadow: 0 4px 12px rgba(0,0,0,0.2);
+    }
+
+    .map-demand-bubble:hover { transform: scale(1.15); }
+
+    .map-demand-bubble.high   { background: #DC2626; }
+    .map-demand-bubble.medium { background: #D97706; }
+    .map-demand-bubble.low    { background: #059669; }
+
+    .map-legend {
+      padding: 14px 24px;
+      border-top: 1px solid var(--border-light);
+      display: flex;
+      gap: 20px;
+      font-size: 0.8125rem;
+      color: var(--n-500);
+      flex-wrap: wrap;
+    }
+
+    .legend-item { display: flex; align-items: center; gap: 8px; }
+    .legend-dot  { width: 12px; height: 12px; border-radius: var(--r-full); flex-shrink: 0; }
+
+    /* Matching suggestions */
+    .match-card {
+      background: white;
+      border-radius: var(--r-lg);
+      border: 1px solid var(--border-light);
+      padding: 18px 20px;
+      margin-bottom: 12px;
+      display: flex;
+      align-items: center;
+      gap: 16px;
+      transition: var(--ease);
+      cursor: pointer;
+    }
+
+    .match-card:hover { box-shadow: var(--sh-md); transform: translateY(-1px); }
+
+    .match-icon {
+      width: 48px; height: 48px;
+      border-radius: var(--r);
+      background: var(--primary-100);
+      display: flex; align-items: center; justify-content: center;
+      font-size: 1.25rem;
+      flex-shrink: 0;
+    }
+
+    .match-title { font-weight: 700; font-size: 0.9375rem; color: var(--n-900); margin-bottom: 3px; }
+    .match-sub   { font-size: 0.8125rem; color: var(--n-500); }
+    .match-distance { margin-right: auto; font-size: 0.8125rem; font-weight: 600; color: var(--primary); white-space: nowrap; }
+
+    /* Recent bookings table */
+    .table-card {
+      background: white;
+      border-radius: var(--r-xl);
+      border: 1px solid var(--border-light);
+      overflow: hidden;
+    }
+
+    .table-header {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 20px 24px;
+      border-bottom: 1px solid var(--border-light);
+    }
+
+    .status-pill {
+      display: inline-flex;
+      align-items: center;
+      gap: 5px;
+      padding: 4px 10px;
+      border-radius: var(--r-full);
+      font-size: 0.775rem;
+      font-weight: 700;
+    }
+
+    .status-pill.active    { background: var(--success-light); color: var(--success); }
+    .status-pill.pending   { background: var(--warning-light); color: var(--warning); }
+    .status-pill.completed { background: var(--n-100); color: var(--n-600); }
+    .status-pill.cancelled { background: var(--error-light); color: var(--error); }
+
+    /* Utilization chart */
+    .util-bar-wrap { display: flex; flex-direction: column; gap: 12px; }
+
+    .util-row { display: flex; align-items: center; gap: 12px; font-size: 0.875rem; }
+    .util-label { width: 140px; color: var(--n-700); font-weight: 500; flex-shrink: 0; text-align: right; }
+    .util-track { flex: 1; height: 10px; background: var(--n-200); border-radius: var(--r-full); overflow: hidden; }
+    .util-fill { height: 100%; border-radius: var(--r-full); background: var(--primary-400); }
+    .util-pct { width: 36px; text-align: left; font-weight: 700; color: var(--n-900); flex-shrink: 0; font-size: 0.8125rem; }
+
+    /* Section grid */
+    .dash-two-col { display: grid; grid-template-columns: 1fr 340px; gap: 20px; align-items: start; }
+    .dash-three-col { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 16px; }
+
+    /* Revenue chart placeholder */
+    .revenue-chart {
+      height: 200px;
+      background: linear-gradient(180deg, var(--primary-50) 0%, white 100%);
+      border-radius: var(--r-lg);
+      display: flex;
+      align-items: flex-end;
+      padding: 16px;
+      gap: 8px;
+    }
+
+    .chart-bar-group { display: flex; flex-direction: column; align-items: center; flex: 1; gap: 4px; }
+
+    .chart-bar {
+      width: 100%;
+      background: linear-gradient(180deg, var(--primary-400) 0%, var(--primary) 100%);
+      border-radius: var(--r-sm) var(--r-sm) 0 0;
+      min-height: 4px;
+      transition: var(--ease-slow);
+    }
+
+    .chart-bar:hover { background: linear-gradient(180deg, var(--primary-300) 0%, var(--primary-600) 100%); }
+    .chart-label { font-size: 0.7rem; color: var(--n-400); font-weight: 600; }
+
+    /* Top region badges */
+    .region-badge {
+      background: var(--primary-50);
+      border: 1px solid var(--primary-100);
+      border-radius: var(--r);
+      padding: 12px 16px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      margin-bottom: 8px;
+    }
+
+    .region-name { font-weight: 700; font-size: 0.9rem; color: var(--n-900); }
+    .region-demand {
+      font-size: 0.8125rem;
+      font-weight: 700;
+    }
+
+    .region-demand.high { color: var(--error); }
+    .region-demand.med  { color: var(--warning); }
+    .region-demand.low  { color: var(--success); }
+  </style>
+</head>
+<body>
+
+<!-- Top nav bar -->
+<div class="dash-topbar">
+  <div class="dash-topbar-inner">
+    <a href="index.html" class="nav-logo">
+      <div class="nav-logo-mark"><svg viewBox="0 0 24 24"><path d="M12 3L2 9l10 6 10-6-10-6z"/><path d="M2 15l10 6 10-6"/></svg></div>
+      <span class="nav-logo-text">ASSET<span>-LINK</span></span>
+    </a>
+
+    <div style="display:flex; align-items:center; gap:8px; background:var(--n-100); border-radius:var(--r-full); padding:6px 16px; flex:1; max-width:360px; margin:0 24px;">
+      <span style="color:var(--n-400);">🔍</span>
+      <input type="text" placeholder="חפש הזמנה, שוכר, ציוד..." style="background:none; border:none; outline:none; font-family:var(--font); font-size:0.9rem; width:100%; color:var(--n-700);" dir="rtl">
+    </div>
+
+    <div style="display:flex; align-items:center; gap:12px;">
+      <div class="dash-notif">
+        🔔
+        <div class="notif-badge">3</div>
+      </div>
+      <div class="dash-user">
+        <img src="https://ui-avatars.com/api/?name=קיבוץ+שדה+אליהו&background=D8F3DC&color=1B4332&size=72&bold=true&font-size=0.35" class="dash-user-avatar" alt="">
+        <div>
+          <div class="dash-user-name">קיבוץ שדה אליהו</div>
+          <div class="dash-user-role">בעל ציוד · 6 מכונות</div>
+        </div>
+        <span style="color:var(--n-400); font-size:0.8rem; margin-right:4px;">▾</span>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div class="dash-content">
+  <!-- Sidebar -->
+  <aside class="dash-sidebar">
+    <div class="sidebar-logo">
+      <span style="font-size:0.8125rem; color:var(--n-400); font-weight:500;">תפריט ניהול</span>
+    </div>
+
+    <div class="sidebar-section-label">ראשי</div>
+    <a href="dashboard.html" class="dash-nav-item active">
+      <span class="nav-item-icon">📊</span> סקירה כללית
+    </a>
+    <a href="#" class="dash-nav-item">
+      <span class="nav-item-icon">📅</span> הזמנות
+      <span class="nav-item-badge">3</span>
+    </a>
+    <a href="#" class="dash-nav-item">
+      <span class="nav-item-icon">🚜</span> הציוד שלי
+    </a>
+    <a href="#" class="dash-nav-item">
+      <span class="nav-item-icon">💬</span> הודעות
+      <span class="nav-item-badge">7</span>
+    </a>
+
+    <div class="sidebar-section-label">ניתוח שוק</div>
+    <a href="#" class="dash-nav-item">
+      <span class="nav-item-icon">🗺️</span> מפת ביקושים
+    </a>
+    <a href="#" class="dash-nav-item">
+      <span class="nav-item-icon">🔗</span> התאמות מומלצות
+      <span class="nav-item-badge green">4</span>
+    </a>
+    <a href="#" class="dash-nav-item">
+      <span class="nav-item-icon">📈</span> מגמות אזוריות
+    </a>
+
+    <div class="sidebar-section-label">פיננסים</div>
+    <a href="#" class="dash-nav-item">
+      <span class="nav-item-icon">💰</span> הכנסות
+    </a>
+    <a href="#" class="dash-nav-item">
+      <span class="nav-item-icon">🧾</span> חשבוניות
+    </a>
+    <a href="#" class="dash-nav-item">
+      <span class="nav-item-icon">⚙️</span> הגדרות
+    </a>
+
+    <div style="margin: 20px 16px 0; padding: 14px; background: var(--primary-50); border-radius: var(--r); border: 1px solid var(--primary-100);">
+      <div style="font-size:0.8rem; font-weight:700; color:var(--primary); margin-bottom:4px;">💡 טיפ השבוע</div>
+      <div style="font-size:0.8rem; color:var(--n-600); line-height:1.5;">ביקוש לטרקטורים בגליל גבוה ב-34% לעומת ממוצע. שקול להוסיף עוד ציוד.</div>
+    </div>
+  </aside>
+
+  <!-- Main Dashboard -->
+  <main class="dash-main">
+    <!-- Header -->
+    <div class="dash-header">
+      <div>
+        <div class="dash-greeting">שלום, קיבוץ שדה אליהו 👋</div>
+        <div class="dash-date">יום שלישי, 16 יוני 2025 · עונת קיץ פעילה</div>
+      </div>
+      <div style="display:flex; gap:10px; align-items:center;">
+        <select style="padding:9px 16px; border:1.5px solid var(--border); border-radius:var(--r-sm); font-size:0.875rem; font-family:var(--font); color:var(--n-700); background:white;">
+          <option>30 יום אחרונים</option>
+          <option>90 יום</option>
+          <option>שנה שוטפת</option>
+        </select>
+        <a href="list-equipment.html" class="btn btn-primary btn-sm">＋ הוסף ציוד</a>
+      </div>
+    </div>
+
+    <!-- KPI Cards -->
+    <div class="kpi-grid">
+      <div class="kpi-card green">
+        <div class="kpi-icon">💰</div>
+        <div class="kpi-label">הכנסה החודש</div>
+        <div class="kpi-value">₪38,200</div>
+        <div class="kpi-trend up">↑ 23% ממחודש קודם</div>
+      </div>
+      <div class="kpi-card">
+        <div class="kpi-icon">📅</div>
+        <div class="kpi-label">ימי השכרה פעילים</div>
+        <div class="kpi-value">41</div>
+        <div class="kpi-trend up">↑ מ-34 בחודש קודם</div>
+      </div>
+      <div class="kpi-card orange">
+        <div class="kpi-icon">🔔</div>
+        <div class="kpi-label">בקשות ממתינות</div>
+        <div class="kpi-value">3</div>
+        <div class="kpi-trend neutral">⏳ ממוצע 2.3 שעות</div>
+      </div>
+      <div class="kpi-card blue">
+        <div class="kpi-icon">⭐</div>
+        <div class="kpi-label">דירוג ממוצע</div>
+        <div class="kpi-value">4.9</div>
+        <div class="kpi-trend up">↑ מ-4.7 ב-2024</div>
+      </div>
+    </div>
+
+    <!-- Revenue Chart + Recent Bookings -->
+    <div class="dash-two-col" style="margin-bottom:24px;">
+      <div class="table-card">
+        <div class="table-header">
+          <div>
+            <div style="font-size:1rem; font-weight:800; color:var(--n-900);">הכנסות — 6 חודשים</div>
+            <div style="font-size:0.8125rem; color:var(--n-500); margin-top:2px;">סה"כ 2025: ₪178,400</div>
+          </div>
+          <div style="font-size:0.8125rem; color:var(--success); font-weight:700; background:var(--success-light); padding:4px 12px; border-radius:var(--r-full);">↑ 31% לעומת 2024</div>
+        </div>
+        <div style="padding:20px 24px;">
+          <div class="revenue-chart">
+            <div class="chart-bar-group">
+              <div class="chart-bar" style="height:55%"></div>
+              <div class="chart-label">ינו</div>
+            </div>
+            <div class="chart-bar-group">
+              <div class="chart-bar" style="height:40%"></div>
+              <div class="chart-label">פבר</div>
+            </div>
+            <div class="chart-bar-group">
+              <div class="chart-bar" style="height:75%"></div>
+              <div class="chart-label">מרץ</div>
+            </div>
+            <div class="chart-bar-group">
+              <div class="chart-bar" style="height:90%"></div>
+              <div class="chart-label">אפר</div>
+            </div>
+            <div class="chart-bar-group">
+              <div class="chart-bar" style="height:80%"></div>
+              <div class="chart-label">מאי</div>
+            </div>
+            <div class="chart-bar-group">
+              <div class="chart-bar" style="height:95%; background:linear-gradient(180deg, #74C69D 0%, #2D6A4F 100%);"></div>
+              <div class="chart-label" style="color:var(--primary); font-weight:800;">יוני</div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Quick Stats -->
+      <div style="display:flex; flex-direction:column; gap:16px;">
+        <div class="table-card p-6">
+          <div style="font-size:0.9rem; font-weight:800; color:var(--n-900); margin-bottom:14px;">ניצולת ציוד</div>
+          <div class="util-bar-wrap">
+            <div class="util-row">
+              <div class="util-label">ג'ון דיר 6110M</div>
+              <div class="util-track"><div class="util-fill" style="width:78%"></div></div>
+              <div class="util-pct">78%</div>
+            </div>
+            <div class="util-row">
+              <div class="util-label">קלאס לקסיון</div>
+              <div class="util-track"><div class="util-fill" style="width:62%;background:var(--warning)"></div></div>
+              <div class="util-pct">62%</div>
+            </div>
+            <div class="util-row">
+              <div class="util-label">מחפר CX130</div>
+              <div class="util-track"><div class="util-fill" style="width:45%;background:var(--earth-light)"></div></div>
+              <div class="util-pct">45%</div>
+            </div>
+            <div class="util-row">
+              <div class="util-label">מרסס הרדי</div>
+              <div class="util-track"><div class="util-fill" style="width:91%"></div></div>
+              <div class="util-pct" style="color:var(--success);">91%</div>
+            </div>
+          </div>
+        </div>
+
+        <div class="table-card p-6">
+          <div style="font-size:0.9rem; font-weight:800; color:var(--n-900); margin-bottom:14px;">ביקוש לפי ציוד</div>
+          <div class="region-badge">
+            <span class="region-name">🚜 טרקטורים</span>
+            <span class="region-demand high">ביקוש גבוה ↑</span>
+          </div>
+          <div class="region-badge">
+            <span class="region-name">🌾 קוצרים</span>
+            <span class="region-demand high">עונה פעילה ↑↑</span>
+          </div>
+          <div class="region-badge">
+            <span class="region-name">💧 ריסוס</span>
+            <span class="region-demand med">ממוצע →</span>
+          </div>
+          <div class="region-badge" style="background:var(--n-50); border-color:var(--n-100);">
+            <span class="region-name">⛏️ מחפרים</span>
+            <span class="region-demand low">נמוך ↓</span>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Demand Map -->
+    <div class="demand-map" style="margin-bottom:24px;">
+      <div class="map-header">
+        <div>
+          <div style="font-size:1rem; font-weight:800; color:var(--n-900);">🗺️ מפת ביקושים — עכשיו</div>
+          <div style="font-size:0.8125rem; color:var(--n-500); margin-top:2px;">מבוסס על פניות פעילות בפלטפורמה ב-7 ימים האחרונים</div>
+        </div>
+        <div style="display:flex; gap:8px; align-items:center;">
+          <select style="padding:7px 14px; border:1.5px solid var(--border); border-radius:var(--r-sm); font-size:0.85rem; font-family:var(--font); color:var(--n-700);">
+            <option>כל הציוד</option>
+            <option>טרקטורים</option>
+            <option>קוצרים</option>
+            <option>ריסוס</option>
+          </select>
+        </div>
+      </div>
+      <div class="map-body">
+        <div class="map-israel-outline">🇮🇱</div>
+
+        <!-- Simulated demand bubbles -->
+        <div class="map-demand-bubble high" style="width:64px;height:64px;top:18%;right:30%;font-size:0.8rem;">עמק<br>יזר' 47</div>
+        <div class="map-demand-bubble high" style="width:52px;height:52px;top:12%;right:50%;font-size:0.7rem;">גליל<br>38</div>
+        <div class="map-demand-bubble medium" style="width:48px;height:48px;top:38%;right:20%;font-size:0.7rem;">שפלה<br>24</div>
+        <div class="map-demand-bubble medium" style="width:44px;height:44px;top:30%;right:42%;font-size:0.7rem;">ירדן<br>19</div>
+        <div class="map-demand-bubble low" style="width:40px;height:40px;top:60%;right:25%;font-size:0.7rem;">נגב<br>12</div>
+        <div class="map-demand-bubble low" style="width:36px;height:36px;top:78%;right:30%;font-size:0.65rem;">ערבה<br>8</div>
+        <div class="map-demand-bubble medium" style="width:42px;height:42px;top:25%;right:65%;font-size:0.7rem;">חוף<br>22</div>
+
+        <div style="position:absolute; bottom:12px; right:12px; background:rgba(255,255,255,0.9); border-radius:var(--r-sm); padding:10px 14px; font-size:0.8125rem; backdrop-filter:blur(8px); border:1px solid rgba(255,255,255,0.5);">
+          <div style="font-weight:700; color:var(--n-900); margin-bottom:4px;">סה"כ פניות פעילות</div>
+          <div style="font-size:1.5rem; font-weight:900; color:var(--primary);">170</div>
+          <div style="font-size:0.75rem; color:var(--n-500);">ב-7 ימים האחרונים</div>
+        </div>
+      </div>
+      <div class="map-legend">
+        <div class="legend-item"><div class="legend-dot" style="background:#DC2626"></div> ביקוש גבוה (35+)</div>
+        <div class="legend-item"><div class="legend-dot" style="background:#D97706"></div> ביקוש בינוני (15–34)</div>
+        <div class="legend-item"><div class="legend-dot" style="background:#059669"></div> ביקוש נמוך (עד 14)</div>
+        <div style="margin-right:auto; font-size:0.8rem; color:var(--n-400);">גודל הבועה = מספר פניות · לחץ לפרטים</div>
+      </div>
+    </div>
+
+    <!-- Two columns: Bookings + Matching -->
+    <div class="dash-two-col">
+      <!-- Recent Bookings -->
+      <div class="table-card">
+        <div class="table-header">
+          <div style="font-size:1rem; font-weight:800; color:var(--n-900);">הזמנות אחרונות</div>
+          <a href="#" class="btn btn-ghost btn-xs">הכל →</a>
+        </div>
+        <table class="data-table">
+          <thead>
+            <tr>
+              <th>שוכר</th>
+              <th>ציוד</th>
+              <th>תאריכים</th>
+              <th>סכום</th>
+              <th>סטטוס</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td>
+                <div style="display:flex;align-items:center;gap:8px;">
+                  <img src="https://ui-avatars.com/api/?name=אמיר+ז&background=D8F3DC&color=1B4332&size=56&bold=true" style="width:30px;height:30px;border-radius:50%;" alt="">
+                  <span style="font-weight:600;">אמיר זכריה</span>
+                </div>
+              </td>
+              <td>ג'ון דיר 6110M</td>
+              <td style="white-space:nowrap;">7–11 יולי</td>
+              <td style="font-weight:700; color:var(--success);">₪4,462</td>
+              <td><span class="status-pill active">🟢 פעיל</span></td>
+            </tr>
+            <tr>
+              <td>
+                <div style="display:flex;align-items:center;gap:8px;">
+                  <img src="https://ui-avatars.com/api/?name=מרים+כ&background=F0E5D8&color=5C4A3A&size=56&bold=true" style="width:30px;height:30px;border-radius:50%;" alt="">
+                  <span style="font-weight:600;">מרים כהן</span>
+                </div>
+              </td>
+              <td>קלאס לקסיון 560</td>
+              <td style="white-space:nowrap;">14–21 יולי</td>
+              <td style="font-weight:700;">₪29,800</td>
+              <td><span class="status-pill pending">⏳ ממתין</span></td>
+            </tr>
+            <tr>
+              <td>
+                <div style="display:flex;align-items:center;gap:8px;">
+                  <img src="https://ui-avatars.com/api/?name=נועם+פ&background=DBEAFE&color=1E3A5F&size=56&bold=true" style="width:30px;height:30px;border-radius:50%;" alt="">
+                  <span style="font-weight:600;">נועם פישר</span>
+                </div>
+              </td>
+              <td>מרסס הרדי 3200</td>
+              <td style="white-space:nowrap;">3–5 יולי</td>
+              <td style="font-weight:700;">₪2,332</td>
+              <td><span class="status-pill pending">⏳ ממתין</span></td>
+            </tr>
+            <tr>
+              <td>
+                <div style="display:flex;align-items:center;gap:8px;">
+                  <img src="https://ui-avatars.com/api/?name=ליאת+ב&background=EDE9FE&color=4C1D95&size=56&bold=true" style="width:30px;height:30px;border-radius:50%;" alt="">
+                  <span style="font-weight:600;">ליאת ברוך</span>
+                </div>
+              </td>
+              <td>ג'ון דיר 6110M</td>
+              <td style="white-space:nowrap;">25–28 יוני</td>
+              <td style="font-weight:700;">₪3,400</td>
+              <td><span class="status-pill completed">✓ הושלם</span></td>
+            </tr>
+            <tr>
+              <td>
+                <div style="display:flex;align-items:center;gap:8px;">
+                  <img src="https://ui-avatars.com/api/?name=דני+ה&background=FEF3C7&color=92400E&size=56&bold=true" style="width:30px;height:30px;border-radius:50%;" alt="">
+                  <span style="font-weight:600;">דני הרמן</span>
+                </div>
+              </td>
+              <td>מחפר CX130D</td>
+              <td style="white-space:nowrap;">18–20 יוני</td>
+              <td style="font-weight:700;">₪5,850</td>
+              <td><span class="status-pill completed">✓ הושלם</span></td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+
+      <!-- Smart Matching Suggestions -->
+      <div>
+        <div style="font-size:1rem; font-weight:800; color:var(--n-900); margin-bottom:14px; display:flex; align-items:center; gap:8px;">
+          🔗 התאמות מומלצות
+          <span style="background:var(--success-light); color:var(--success); font-size:0.75rem; padding:2px 8px; border-radius:var(--r-full); font-weight:700;">4 חדשות</span>
+        </div>
+        <div style="font-size:0.8125rem; color:var(--n-500); margin-bottom:16px;">חוכרים באזורך שמחפשים ציוד שיש לך — מבוסס על פניות בפלטפורמה</div>
+
+        <div class="match-card">
+          <div class="match-icon">🚜</div>
+          <div style="flex:1; min-width:0;">
+            <div class="match-title">טרקטור 80–120 כ"ס</div>
+            <div class="match-sub">📍 קיבוץ עין דור — עמק יזרעאל · 12 ק"מ</div>
+            <div class="match-sub" style="margin-top:3px; color:var(--warning);">⏰ ל-14–19 יולי · דחוף</div>
+          </div>
+          <div>
+            <div class="match-distance">₪850/יום</div>
+            <button class="btn btn-primary btn-xs" style="margin-top:6px; width:100%;">הצע ←</button>
+          </div>
+        </div>
+
+        <div class="match-card">
+          <div class="match-icon">🌾</div>
+          <div style="flex:1; min-width:0;">
+            <div class="match-title">קומביין לחיטה</div>
+            <div class="match-sub">📍 מושב נהלל — רמת יזרעאל · 18 ק"מ</div>
+            <div class="match-sub" style="margin-top:3px;">ל-20–28 יולי · 8 ימים</div>
+          </div>
+          <div>
+            <div class="match-distance">₪3,800/יום</div>
+            <button class="btn btn-primary btn-xs" style="margin-top:6px; width:100%;">הצע ←</button>
+          </div>
+        </div>
+
+        <div class="match-card">
+          <div class="match-icon">💧</div>
+          <div style="flex:1; min-width:0;">
+            <div class="match-title">מרסס — כותנה</div>
+            <div class="match-sub">📍 כפר ויתקין — שפלה · 34 ק"מ</div>
+            <div class="match-sub" style="margin-top:3px;">ל-1–3 אוגוסט</div>
+          </div>
+          <div>
+            <div class="match-distance">₪720/יום</div>
+            <button class="btn btn-ghost btn-xs" style="margin-top:6px; width:100%;">הצע ←</button>
+          </div>
+        </div>
+
+        <div class="match-card">
+          <div class="match-icon">⛏️</div>
+          <div style="flex:1; min-width:0;">
+            <div class="match-title">מחפר / עבודות עפר</div>
+            <div class="match-sub">📍 קריית שמונה — גליל עליון · 55 ק"מ</div>
+            <div class="match-sub" style="margin-top:3px;">ל-10–15 אוגוסט</div>
+          </div>
+          <div>
+            <div class="match-distance">₪1,950/יום</div>
+            <button class="btn btn-ghost btn-xs" style="margin-top:6px; width:100%;">הצע ←</button>
+          </div>
+        </div>
+
+        <div class="info-box mt-4" style="font-size:0.8125rem;">
+          💡 <strong>מה זה התאמות מומלצות?</strong><br>
+          כשחוכר מחפש ציוד בפלטפורמה ולא מוצא, אנחנו מציגים לך את הבקשה. אתה מחליט אם להציע.
+        </div>
+      </div>
+    </div>
+
+  </main>
+</div>
+
+<script src="js/main.js"></script>
+</body>
+</html>

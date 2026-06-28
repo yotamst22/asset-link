@@ -1,0 +1,887 @@
+<!DOCTYPE html>
+<html lang="he" dir="rtl">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>ASSET-LINK — פלטפורמת שיתוף ציוד חקלאי ותעשייתי</title>
+  <link rel="stylesheet" href="css/styles.css">
+  <style>
+    /* Hero */
+    .hero {
+      min-height: 100vh;
+      background: linear-gradient(160deg, #0D2818 0%, #1B4332 40%, #2D6A4F 80%, #1B4332 100%);
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      position: relative;
+      overflow: hidden;
+      padding-top: var(--nav-h);
+    }
+
+    .hero::before {
+      content: '';
+      position: absolute;
+      inset: 0;
+      background: url('https://images.unsplash.com/photo-1464226184884-fa280b87c399?auto=format&fit=crop&w=1600&q=60') center/cover no-repeat;
+      opacity: 0.18;
+    }
+
+    .hero-grid-overlay {
+      position: absolute;
+      inset: 0;
+      background-image:
+        linear-gradient(rgba(255,255,255,0.03) 1px, transparent 1px),
+        linear-gradient(90deg, rgba(255,255,255,0.03) 1px, transparent 1px);
+      background-size: 60px 60px;
+    }
+
+    .hero-content {
+      position: relative;
+      z-index: 2;
+      padding: 80px 0 64px;
+    }
+
+    .hero-eyebrow {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      background: rgba(255,255,255,0.12);
+      border: 1px solid rgba(255,255,255,0.2);
+      border-radius: var(--r-full);
+      padding: 7px 18px;
+      font-size: 0.875rem;
+      font-weight: 600;
+      color: rgba(255,255,255,0.9);
+      margin-bottom: 28px;
+      backdrop-filter: blur(8px);
+    }
+
+    .hero-eyebrow-dot {
+      width: 7px; height: 7px;
+      background: var(--primary-300);
+      border-radius: var(--r-full);
+      animation: pulse 2s infinite;
+    }
+
+    @keyframes pulse {
+      0%, 100% { opacity: 1; transform: scale(1); }
+      50% { opacity: 0.6; transform: scale(0.85); }
+    }
+
+    .hero-headline {
+      font-size: clamp(2.5rem, 5vw, 4.25rem);
+      font-weight: 900;
+      color: white;
+      line-height: 1.08;
+      letter-spacing: -0.03em;
+      margin-bottom: 24px;
+    }
+
+    .hero-headline em {
+      font-style: normal;
+      color: var(--primary-300);
+    }
+
+    .hero-sub {
+      font-size: clamp(1rem, 1.5vw, 1.25rem);
+      color: rgba(255,255,255,0.75);
+      max-width: 600px;
+      line-height: 1.7;
+      margin-bottom: 40px;
+    }
+
+    .hero-ctas {
+      display: flex;
+      gap: 14px;
+      align-items: center;
+      flex-wrap: wrap;
+      margin-bottom: 48px;
+    }
+
+    .hero-search-wrap {
+      max-width: 780px;
+      margin-bottom: 28px;
+    }
+
+    .trust-bar-hero {
+      display: flex;
+      align-items: center;
+      gap: 6px;
+      flex-wrap: wrap;
+    }
+
+    .hero-stats {
+      position: relative;
+      z-index: 2;
+      padding: 32px 0;
+      border-top: 1px solid rgba(255,255,255,0.12);
+    }
+
+    .hero-stats-inner {
+      display: flex;
+      gap: 56px;
+      flex-wrap: wrap;
+    }
+
+    .hero-stat-item { text-align: center; }
+
+    .hero-stat-val {
+      font-size: 2rem;
+      font-weight: 900;
+      color: white;
+      letter-spacing: -0.04em;
+    }
+
+    .hero-stat-lbl {
+      font-size: 0.8125rem;
+      color: rgba(255,255,255,0.55);
+      margin-top: 2px;
+    }
+
+    .hero-scroll {
+      position: absolute;
+      bottom: 32px;
+      left: 50%;
+      transform: translateX(-50%);
+      z-index: 2;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 8px;
+      color: rgba(255,255,255,0.4);
+      font-size: 0.75rem;
+      cursor: pointer;
+    }
+
+    .scroll-arrow {
+      width: 28px; height: 28px;
+      border: 1.5px solid rgba(255,255,255,0.2);
+      border-radius: var(--r-full);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      animation: bounce 2s infinite;
+    }
+
+    @keyframes bounce {
+      0%, 100% { transform: translateY(0); }
+      50% { transform: translateY(6px); }
+    }
+
+    /* How it works */
+    .hiw-tab-section { background: white; }
+
+    .hiw-step-card {
+      background: var(--bg);
+      border-radius: var(--r-xl);
+      padding: 36px 32px;
+      position: relative;
+      text-align: center;
+    }
+
+    .hiw-step-num {
+      position: absolute;
+      top: -14px;
+      right: 50%;
+      transform: translateX(50%);
+      width: 28px; height: 28px;
+      background: var(--primary);
+      color: white;
+      border-radius: var(--r-full);
+      font-size: 0.8125rem;
+      font-weight: 800;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+
+    .hiw-icon {
+      width: 68px; height: 68px;
+      background: var(--primary-100);
+      border-radius: var(--r-full);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 2rem;
+      margin: 0 auto 20px;
+    }
+
+    .hiw-connector {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      color: var(--n-300);
+      font-size: 1.5rem;
+      padding-top: 24px;
+    }
+
+    /* Benefits */
+    .benefits-section { background: var(--surface-warm); }
+
+    .benefit-card {
+      padding: 28px 24px;
+      background: white;
+      border-radius: var(--r-lg);
+      border: 1px solid var(--border-light);
+      transition: var(--ease-slow);
+    }
+
+    .benefit-card:hover {
+      transform: translateY(-4px);
+      box-shadow: var(--sh-lg);
+      border-color: var(--primary-200);
+    }
+
+    /* Featured equipment */
+    .featured-section { background: var(--bg); }
+
+    .eq-grid-4 {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 20px;
+    }
+
+    /* Partners */
+    .partners-section {
+      background: white;
+      padding: 48px 0;
+      border-top: 1px solid var(--border-light);
+      border-bottom: 1px solid var(--border-light);
+    }
+
+    .partner-logo {
+      height: 36px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 0.875rem;
+      font-weight: 700;
+      color: var(--n-400);
+      filter: grayscale(100%);
+      opacity: 0.55;
+      transition: var(--ease);
+      white-space: nowrap;
+    }
+
+    .partner-logo:hover { filter: none; opacity: 1; color: var(--primary); }
+
+    /* CTA Banner */
+    .cta-banner {
+      background: linear-gradient(135deg, var(--primary) 0%, #2D6A4F 60%, var(--primary-600) 100%);
+      border-radius: var(--r-2xl);
+      padding: 64px 56px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 32px;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .cta-banner::before {
+      content: '';
+      position: absolute;
+      top: -60px; left: -60px;
+      width: 300px; height: 300px;
+      background: rgba(255,255,255,0.05);
+      border-radius: var(--r-full);
+    }
+
+    .cta-banner-title {
+      font-size: clamp(1.5rem, 2.5vw, 2.125rem);
+      font-weight: 900;
+      color: white;
+      margin-bottom: 10px;
+    }
+
+    .cta-banner-sub { font-size: 1rem; color: rgba(255,255,255,0.75); }
+
+    /* EC placeholder colors */
+    .ec-placeholder-1 { background: linear-gradient(135deg, #2D6A4F, #40916C); }
+    .ec-placeholder-2 { background: linear-gradient(135deg, #1B4332, #2D6A4F); }
+    .ec-placeholder-3 { background: linear-gradient(135deg, #6B8F5E, #7A9E7E); }
+    .ec-placeholder-4 { background: linear-gradient(135deg, #A0856A, #C8A98A); }
+    .ec-placeholder-5 { background: linear-gradient(135deg, #334155, #475569); }
+    .ec-placeholder-6 { background: linear-gradient(135deg, #4A7C59, #6B8F5E); }
+
+    .ec-img-placeholder {
+      width: 100%; height: 100%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 3rem;
+      display: none;
+    }
+  </style>
+</head>
+<body>
+
+<!-- Navigation -->
+<nav class="nav" id="main-nav">
+  <div class="container nav-inner">
+    <a href="index.html" class="nav-logo">
+      <div class="nav-logo-mark">
+        <svg viewBox="0 0 24 24"><path d="M12 3L2 9l10 6 10-6-10-6z"/><path d="M2 15l10 6 10-6"/></svg>
+      </div>
+      <span class="nav-logo-text">ASSET<span>-LINK</span></span>
+    </a>
+    <div class="nav-links">
+      <a href="marketplace.html" class="nav-link">שוק הציוד</a>
+      <a href="how-it-works.html" class="nav-link">איך זה עובד</a>
+      <a href="list-equipment.html" class="nav-link">הצג ציוד</a>
+      <a href="dashboard.html" class="nav-link">לוח בקרה</a>
+      <a href="sustainability.html" class="nav-link">קיימות</a>
+    </div>
+    <div class="nav-actions">
+      <a href="#" class="nav-login">כניסה</a>
+      <a href="list-equipment.html" class="btn btn-primary btn-sm">הצג את הציוד שלך</a>
+    </div>
+  </div>
+</nav>
+
+<!-- Hero -->
+<section class="hero">
+  <div class="hero-grid-overlay"></div>
+  <div class="container hero-content">
+    <div class="hero-eyebrow">
+      <span class="hero-eyebrow-dot"></span>
+      פלטפורמת שיתוף ציוד חקלאי ותעשייתי — ישראל
+    </div>
+    <h1 class="hero-headline">
+      הציוד שיושב ריק<br>בשדה שלך —<br><em>יכול להרוויח לך כסף.</em>
+    </h1>
+    <p class="hero-sub">
+      ASSET-LINK מחברת בין בעלי ציוד חקלאי ותעשייתי לחוכרים שצריכים גישה זמנית. בלי לקנות. בלי לבזבז. הבעלות עוברת לשימושיות.
+    </p>
+    <div class="hero-ctas">
+      <a href="marketplace.html" class="btn btn-white btn-lg btn-pill">
+        🔍 &nbsp; מצא ציוד עכשיו
+      </a>
+      <a href="list-equipment.html" class="btn btn-secondary btn-lg btn-pill" style="border-color:rgba(255,255,255,0.4); color:white; background:rgba(255,255,255,0.1); backdrop-filter:blur(8px);">
+        ＋ &nbsp; הצג את הציוד שלך
+      </a>
+    </div>
+    <div class="hero-search-wrap">
+      <div class="hero-search">
+        <div class="hs-seg">
+          <span class="hs-label">🔍 &nbsp; מה אתה מחפש?</span>
+          <input class="hs-input" type="text" placeholder="טרקטור, קומביין, מרסס...">
+        </div>
+        <div class="hs-seg">
+          <span class="hs-label">📍 &nbsp; אזור</span>
+          <input class="hs-input" type="text" placeholder="עמק יזרעאל, נגב, שפלה...">
+        </div>
+        <div class="hs-seg">
+          <span class="hs-label">📅 &nbsp; תאריכים</span>
+          <input class="hs-input" type="text" placeholder="מתי אתה צריך?">
+        </div>
+        <button class="hs-btn">חפש ציוד</button>
+      </div>
+    </div>
+    <div class="trust-bar-hero">
+      <span class="trust-item"><span class="trust-icon">🛡️</span> ביטוח מוטמע לכל השכרה</span>
+      <span class="trust-sep">·</span>
+      <span class="trust-item"><span class="trust-icon">✅</span> ציוד מאומת</span>
+      <span class="trust-sep">·</span>
+      <span class="trust-item"><span class="trust-icon">🔒</span> תשלום מאובטח</span>
+      <span class="trust-sep">·</span>
+      <span class="trust-item"><span class="trust-icon">⭐</span> 4.9/5 דירוג ממוצע</span>
+    </div>
+  </div>
+  <div class="container hero-stats">
+    <div class="hero-stats-inner">
+      <div class="hero-stat-item">
+        <div class="hero-stat-val" data-count-up="523" data-suffix="+">523+</div>
+        <div class="hero-stat-lbl">מכונות פעילות</div>
+      </div>
+      <div class="hero-stat-item">
+        <div class="hero-stat-val" data-count-up="148" data-suffix="+">148+</div>
+        <div class="hero-stat-lbl">בעלי ציוד</div>
+      </div>
+      <div class="hero-stat-item">
+        <div class="hero-stat-val" data-count-up="31">31</div>
+        <div class="hero-stat-lbl">אזורים בישראל</div>
+      </div>
+      <div class="hero-stat-item">
+        <div class="hero-stat-val" data-count-up="2.4" data-prefix="₪" data-suffix="M">₪2.4M</div>
+        <div class="hero-stat-lbl">נחסכו לחוכרים</div>
+      </div>
+      <div class="hero-stat-item">
+        <div class="hero-stat-val" data-count-up="4.9" data-suffix="/5">4.9/5</div>
+        <div class="hero-stat-lbl">דירוג ממוצע</div>
+      </div>
+    </div>
+  </div>
+  <div class="hero-scroll" onclick="document.getElementById('how-it-works').scrollIntoView({behavior:'smooth'})">
+    גלה עוד
+    <div class="scroll-arrow">↓</div>
+  </div>
+</section>
+
+<!-- Partners Strip -->
+<section class="partners-section">
+  <div class="container">
+    <div class="d-flex ai-center gap-8" style="justify-content:center; flex-wrap:wrap;">
+      <span style="font-size:0.8125rem;color:var(--n-400);font-weight:600;white-space:nowrap;">עובדים עם:</span>
+      <div class="partner-logo">🌾 קיבוץ עין דור</div>
+      <div class="partner-logo">🌿 מושב נהלל</div>
+      <div class="partner-logo">🚜 אגרי מכר ישראל</div>
+      <div class="partner-logo">🏗️ מכטכניקס</div>
+      <div class="partner-logo">💧 נטפים</div>
+      <div class="partner-logo">🌾 ויקו ישראל</div>
+      <div class="partner-logo">🌱 חברת הכשרת הישוב</div>
+    </div>
+  </div>
+</section>
+
+<!-- How It Works -->
+<section id="how-it-works" class="section hiw-tab-section">
+  <div class="container">
+    <div class="section-header animate-in">
+      <div class="section-tag">⚙️ תהליך פשוט</div>
+      <h2 class="section-title">איך זה עובד?</h2>
+      <p class="section-sub">ASSET-LINK מחברת בין שני צדדים — בתהליך מהיר, בטוח ומאובטח.</p>
+    </div>
+
+    <div class="tabs" style="display:flex; flex-direction:column; align-items:center; gap:32px;">
+      <div class="tabs-bar">
+        <button class="tab-btn active" data-tab="renters">אני מחפש ציוד</button>
+        <button class="tab-btn" data-tab="owners">יש לי ציוד</button>
+      </div>
+
+      <div class="tab-panel" data-panel="renters" style="display:block; width:100%">
+        <div class="grid-3" style="max-width:900px; margin:0 auto;">
+          <div class="hiw-step-card animate-in">
+            <div class="hiw-step-num">1</div>
+            <div class="hiw-icon">🔍</div>
+            <h4 style="margin-bottom:10px;">חפש ציוד</h4>
+            <p style="font-size:0.9375rem;">מצא ציוד זמין לפי אזור, סוג מכונה ותאריכים. עם פילטרים מתקדמים לכל צורך.</p>
+          </div>
+          <div class="hiw-step-card animate-in">
+            <div class="hiw-step-num">2</div>
+            <div class="hiw-icon">📅</div>
+            <h4 style="margin-bottom:10px;">הזמן ותשלם</h4>
+            <p style="font-size:0.9375rem;">הזמנה מאובטחת ישירות בפלטפורמה. ביטוח מוטמע. תשלום רק לאחר אישור בעל הציוד.</p>
+          </div>
+          <div class="hiw-step-card animate-in">
+            <div class="hiw-step-num">3</div>
+            <div class="hiw-icon">🚜</div>
+            <h4 style="margin-bottom:10px;">קבל ועבוד</h4>
+            <p style="font-size:0.9375rem;">תאם איסוף עצמי או משלוח לשדה שלך. הציוד מגיע מוכן לעבודה עם היסטוריית תחזוקה.</p>
+          </div>
+        </div>
+      </div>
+
+      <div class="tab-panel" data-panel="owners" style="width:100%">
+        <div class="grid-3" style="max-width:900px; margin:0 auto;">
+          <div class="hiw-step-card animate-in">
+            <div class="hiw-step-num">1</div>
+            <div class="hiw-icon">📸</div>
+            <h4 style="margin-bottom:10px;">פרסם את הציוד</h4>
+            <p style="font-size:0.9375rem;">העלה תמונות, מפרטים, מחיר וזמינות. תהליך רישום של 10 דקות בלבד.</p>
+          </div>
+          <div class="hiw-step-card animate-in">
+            <div class="hiw-step-num">2</div>
+            <div class="hiw-icon">🔔</div>
+            <h4 style="margin-bottom:10px;">קבל בקשות</h4>
+            <p style="font-size:0.9375rem;">בדוק פרטי השוכר ואשר את ההזמנה. אתה שולט על מי שוכר את הציוד שלך.</p>
+          </div>
+          <div class="hiw-step-card animate-in">
+            <div class="hiw-step-num">3</div>
+            <div class="hiw-icon">💸</div>
+            <h4 style="margin-bottom:10px;">צבור הכנסה</h4>
+            <p style="font-size:0.9375rem;">קבל תשלום אוטומטי עם סיום כל השכרה. ישירות לחשבון הבנק שלך.</p>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="text-center mt-8">
+      <a href="how-it-works.html" class="btn btn-ghost">קרא עוד על התהליך ←</a>
+    </div>
+  </div>
+</section>
+
+<!-- Featured Equipment -->
+<section class="section featured-section">
+  <div class="container">
+    <div class="section-header animate-in" style="text-align:right; margin-bottom:32px;">
+      <div class="d-flex ai-center jc-between" style="flex-wrap:wrap; gap:16px;">
+        <div>
+          <div class="section-tag" style="width:fit-content;">🚜 ציוד מומלץ</div>
+          <h2 class="section-title" style="margin-bottom:8px;">ציוד זמין באזורך</h2>
+          <p class="section-sub" style="text-align:right; margin:0;">נבחר עבורך על בסיס ביקוש בשבוע האחרון</p>
+        </div>
+        <a href="marketplace.html" class="btn btn-ghost">כל הציוד ← </a>
+      </div>
+    </div>
+
+    <div class="eq-grid-4">
+
+      <!-- Card 1 -->
+      <a href="listing.html" class="equipment-card animate-in">
+        <div class="ec-image ec-placeholder-1">
+          <img src="https://images.unsplash.com/photo-1601584115197-04ecc0da31d7?auto=format&fit=crop&w=600&h=420&q=80" alt="טרקטור ג'ון דיר">
+          <div class="ec-img-placeholder">🚜</div>
+          <div class="ec-badges">
+            <span class="badge badge-verified">✓ מאומת</span>
+            <span class="badge badge-success">זמין</span>
+          </div>
+          <button class="ec-heart">♡</button>
+        </div>
+        <div class="ec-body">
+          <div class="ec-category">טרקטורים</div>
+          <div class="ec-title">ג'ון דיר 6110M — 110 כ"ס</div>
+          <div class="ec-meta">
+            <span>📍 עמק יזרעאל</span>
+            <span>🏘️ קיבוץ</span>
+          </div>
+          <div class="ec-specs">
+            <span class="spec-tag">2019</span>
+            <span class="spec-tag">110 כ"ס</span>
+            <span class="spec-tag">מצוין</span>
+          </div>
+          <div class="ec-price-row">
+            <div>
+              <div class="price-day">₪850 <span>/ יום</span></div>
+              <div class="price-week">₪4,800 / שבוע</div>
+            </div>
+            <div class="rating">
+              <span class="stars">★★★★★</span>
+              <span class="rating-score">4.9</span>
+              <span class="rating-count">(38)</span>
+            </div>
+          </div>
+        </div>
+      </a>
+
+      <!-- Card 2 -->
+      <a href="listing.html" class="equipment-card animate-in">
+        <div class="ec-image ec-placeholder-2">
+          <img src="https://images.unsplash.com/photo-1574323347407-f5e1ad6d020b?auto=format&fit=crop&w=600&h=420&q=80" alt="קומביין">
+          <div class="ec-img-placeholder">🌾</div>
+          <div class="ec-badges">
+            <span class="badge badge-verified">✓ מאומת</span>
+            <span class="badge badge-warning">עסוק עד 20.7</span>
+          </div>
+          <button class="ec-heart">♡</button>
+        </div>
+        <div class="ec-body">
+          <div class="ec-category">קוצרים</div>
+          <div class="ec-title">קלאס לקסיון 560 — קומביין</div>
+          <div class="ec-meta">
+            <span>📍 גליל עליון</span>
+            <span>🏘️ קיבוץ</span>
+          </div>
+          <div class="ec-specs">
+            <span class="spec-tag">2020</span>
+            <span class="spec-tag">390 כ"ס</span>
+            <span class="spec-tag">כמו חדש</span>
+          </div>
+          <div class="ec-price-row">
+            <div>
+              <div class="price-day">₪3,800 <span>/ יום</span></div>
+              <div class="price-week">₪22,000 / שבוע</div>
+            </div>
+            <div class="rating">
+              <span class="stars">★★★★★</span>
+              <span class="rating-score">4.8</span>
+              <span class="rating-count">(22)</span>
+            </div>
+          </div>
+        </div>
+      </a>
+
+      <!-- Card 3 -->
+      <a href="listing.html" class="equipment-card animate-in">
+        <div class="ec-image ec-placeholder-3">
+          <img src="https://images.unsplash.com/photo-1416879595882-3373a0480b5b?auto=format&fit=crop&w=600&h=420&q=80" alt="מרסס שדה">
+          <div class="ec-img-placeholder">💧</div>
+          <div class="ec-badges">
+            <span class="badge badge-verified">✓ מאומת</span>
+            <span class="badge badge-success">זמין</span>
+          </div>
+          <button class="ec-heart">♡</button>
+        </div>
+        <div class="ec-body">
+          <div class="ec-category">ריסוס</div>
+          <div class="ec-title">הרדי קומנדר 3200 — מרסס</div>
+          <div class="ec-meta">
+            <span>📍 שפלת יהודה</span>
+            <span>👤 פרטי</span>
+          </div>
+          <div class="ec-specs">
+            <span class="spec-tag">3,200 ל'</span>
+            <span class="spec-tag">24 מ' טווח</span>
+            <span class="spec-tag">טוב</span>
+          </div>
+          <div class="ec-price-row">
+            <div>
+              <div class="price-day">₪720 <span>/ יום</span></div>
+              <div class="price-week">₪4,100 / שבוע</div>
+            </div>
+            <div class="rating">
+              <span class="stars">★★★★★</span>
+              <span class="rating-score">4.7</span>
+              <span class="rating-count">(15)</span>
+            </div>
+          </div>
+        </div>
+      </a>
+
+      <!-- Card 4 -->
+      <a href="listing.html" class="equipment-card animate-in">
+        <div class="ec-image ec-placeholder-4">
+          <img src="https://images.unsplash.com/photo-1625246333195-78d9c38ad449?auto=format&fit=crop&w=600&h=420&q=80" alt="מלגזה">
+          <div class="ec-img-placeholder">⚙️</div>
+          <div class="ec-badges">
+            <span class="badge badge-verified">✓ מאומת</span>
+            <span class="badge badge-success">זמין</span>
+          </div>
+          <button class="ec-heart">♡</button>
+        </div>
+        <div class="ec-body">
+          <div class="ec-category">מלגזות</div>
+          <div class="ec-title">היסטר H80XM — 8 טון</div>
+          <div class="ec-meta">
+            <span>📍 אשדוד</span>
+            <span>🏢 חברה</span>
+          </div>
+          <div class="ec-specs">
+            <span class="spec-tag">8 טון</span>
+            <span class="spec-tag">2018</span>
+            <span class="spec-tag">טוב מאוד</span>
+          </div>
+          <div class="ec-price-row">
+            <div>
+              <div class="price-day">₪490 <span>/ יום</span></div>
+              <div class="price-week">₪2,800 / שבוע</div>
+            </div>
+            <div class="rating">
+              <span class="stars">★★★★½</span>
+              <span class="rating-score">4.5</span>
+              <span class="rating-count">(31)</span>
+            </div>
+          </div>
+        </div>
+      </a>
+
+    </div>
+
+    <div class="text-center mt-8">
+      <a href="marketplace.html" class="btn btn-primary btn-lg">
+        ראה את כל 523 המכונות ←
+      </a>
+    </div>
+  </div>
+</section>
+
+<!-- Benefits -->
+<section class="section benefits-section">
+  <div class="container">
+    <div class="section-header animate-in">
+      <div class="section-tag">💡 למה ASSET-LINK?</div>
+      <h2 class="section-title">ערך אמיתי לשני הצדדים</h2>
+    </div>
+
+    <div class="grid-2" style="gap:40px; align-items:start;">
+      <!-- For Owners -->
+      <div>
+        <div style="padding:28px 28px 20px; background: linear-gradient(135deg, var(--primary) 0%, #2D6A4F 100%); border-radius:var(--r-xl); color:white; margin-bottom:20px;">
+          <div style="font-size:0.875rem; font-weight:700; opacity:0.75; margin-bottom:6px; letter-spacing:0.06em; text-transform:uppercase;">לבעלי ציוד</div>
+          <h3 style="color:white; font-size:1.625rem; margin-bottom:8px; letter-spacing:-0.02em;">הפכו ציוד מושבת<br>להכנסה יציבה</h3>
+          <p style="color:rgba(255,255,255,0.75); font-size:0.9375rem;">ציוד שעומד ריק עולה לכם כסף. תנו לו לעבוד גם בזמן שאתם לא עובדים.</p>
+        </div>
+        <div class="grid-2" style="gap:14px;">
+          <div class="benefit-card">
+            <div class="benefit-icon">💰</div>
+            <h5 style="margin-bottom:6px;">הכנסה פסיבית</h5>
+            <p style="font-size:0.875rem;">השכירו ב-47+ יום בשנה שאתם לא משתמשים. בעלי ציוד מרוויחים ₪80,000–₪200,000 בשנה.</p>
+          </div>
+          <div class="benefit-card">
+            <div class="benefit-icon">🛡️</div>
+            <h5 style="margin-bottom:6px;">ביטוח מוטמע</h5>
+            <p style="font-size:0.875rem;">כיסוי ביטוחי מקיף לכל השכרה. ללא עלות נוספת מכיסכם.</p>
+          </div>
+          <div class="benefit-card">
+            <div class="benefit-icon">📱</div>
+            <h5 style="margin-bottom:6px;">שליטה מלאה</h5>
+            <p style="font-size:0.875rem;">אתם קובעים מחיר, זמינות ותנאים. אתם מאשרים כל הזמנה.</p>
+          </div>
+          <div class="benefit-card">
+            <div class="benefit-icon">⚡</div>
+            <h5 style="margin-bottom:6px;">תשלום מהיר</h5>
+            <p style="font-size:0.875rem;">תשלום אוטומטי לחשבון הבנק תוך 48 שעות מסיום ההשכרה.</p>
+          </div>
+        </div>
+      </div>
+
+      <!-- For Renters -->
+      <div>
+        <div style="padding:28px 28px 20px; background: var(--earth-50); border: 1.5px solid var(--earth-100); border-radius:var(--r-xl); margin-bottom:20px;">
+          <div style="font-size:0.875rem; font-weight:700; color:var(--earth-900); opacity:0.75; margin-bottom:6px; letter-spacing:0.06em; text-transform:uppercase;">לחוכרים</div>
+          <h3 style="color:var(--n-900); font-size:1.625rem; margin-bottom:8px; letter-spacing:-0.02em;">גישה לציוד מקצועי<br>בלי לקנות</h3>
+          <p style="color:var(--n-600); font-size:0.9375rem;">חסכו 70%–85% לעומת עלות רכישה. שלמו רק כשאתם צריכים.</p>
+        </div>
+        <div class="grid-2" style="gap:14px;">
+          <div class="benefit-card">
+            <div class="benefit-icon" style="background:var(--earth-100);">💸</div>
+            <h5 style="margin-bottom:6px;">חיסכון עצום</h5>
+            <p style="font-size:0.875rem;">₪3,800/יום לעומת ₪1.2M לרכישה. שלמו בדיוק על מה שצריכים.</p>
+          </div>
+          <div class="benefit-card">
+            <div class="benefit-icon" style="background:var(--earth-100);">✅</div>
+            <h5 style="margin-bottom:6px;">ציוד מאומת</h5>
+            <p style="font-size:0.875rem;">כל ציוד עובר בדיקת מצב, עם היסטוריית תחזוקה מלאה ותמונות עדכניות.</p>
+          </div>
+          <div class="benefit-card">
+            <div class="benefit-icon" style="background:var(--earth-100);">🚚</div>
+            <h5 style="margin-bottom:6px;">גמישות מלאה</h5>
+            <p style="font-size:0.875rem;">איסוף עצמי או משלוח לשדה. לפי יום, שבוע או חודש.</p>
+          </div>
+          <div class="benefit-card">
+            <div class="benefit-icon" style="background:var(--earth-100);">📞</div>
+            <h5 style="margin-bottom:6px;">תמיכה 24/7</h5>
+            <p style="font-size:0.875rem;">תמיכה טלפונית בעברית לאורך כל תקופת ההשכרה.</p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- Testimonials -->
+<section class="section" style="background:white;">
+  <div class="container">
+    <div class="section-header animate-in">
+      <div class="section-tag">💬 מה אומרים עלינו</div>
+      <h2 class="section-title">חקלאים שכבר עובדים עם ASSET-LINK</h2>
+    </div>
+    <div class="grid-3">
+
+      <div class="testimonial-card animate-in">
+        <div class="testimonial-quote-mark">"</div>
+        <p class="testimonial-text">
+          "השכרנו את הקומביין שלנו ב-47 יום שלא השתמשנו בו השנה. הרווחנו יותר מ-<strong>₪178,000</strong> שפשוט ישבו ריקים. ASSET-LINK שינה לנו את כל מודל ההכנסות."
+        </p>
+        <div class="testimonial-author">
+          <img src="https://ui-avatars.com/api/?name=דוד+כהן&background=D8F3DC&color=1B4332&size=92&font-size=0.45&bold=true" alt="דוד כהן" class="testimonial-avatar">
+          <div>
+            <div class="testimonial-name">דוד כהן</div>
+            <div class="testimonial-role">קיבוץ עין דור, עמק יזרעאל</div>
+            <div class="testimonial-saved">↑ ₪178,000 הכנסה נוספת בשנה</div>
+          </div>
+        </div>
+      </div>
+
+      <div class="testimonial-card animate-in">
+        <div class="testimonial-quote-mark">"</div>
+        <p class="testimonial-text">
+          "כחקלאי קטן, לא יכולתי להרשות לעצמי לקנות מרסס מקצועי. דרך ASSET-LINK שכרתי אחד ב-<strong>₪3,800 לשבוע</strong> במקום לקנות ב-₪280,000. הגידול של השנה שינה לי את החיים."
+        </p>
+        <div class="testimonial-author">
+          <img src="https://ui-avatars.com/api/?name=יוסי+לוי&background=F0E5D8&color=5C4A3A&size=92&font-size=0.45&bold=true" alt="יוסי לוי" class="testimonial-avatar">
+          <div>
+            <div class="testimonial-name">יוסי לוי</div>
+            <div class="testimonial-role">מושב נהלל, רמת יזרעאל</div>
+            <div class="testimonial-saved" style="color:var(--warning);">↓ חסך ₪276,200 ברכישה</div>
+          </div>
+        </div>
+      </div>
+
+      <div class="testimonial-card animate-in">
+        <div class="testimonial-quote-mark">"</div>
+        <p class="testimonial-text">
+          "ה-matching הביא לנו שוכרים מהאזור שאף פעם לא ידענו שצריכים את הציוד שלנו. הפלטפורמה עושה את העבודה — אנחנו רק מאשרים הזמנות."
+        </p>
+        <div class="testimonial-author">
+          <img src="https://ui-avatars.com/api/?name=שרה+ברק&background=D8F3DC&color=1B4332&size=92&font-size=0.45&bold=true" alt="שרה ברק" class="testimonial-avatar">
+          <div>
+            <div class="testimonial-name">שרה ברק</div>
+            <div class="testimonial-role">חברת חקלאות שרב, נגב</div>
+            <div class="testimonial-saved">↑ 4 מכונות פעילות בפלטפורמה</div>
+          </div>
+        </div>
+      </div>
+
+    </div>
+  </div>
+</section>
+
+<!-- CTA Banner -->
+<section class="section-sm">
+  <div class="container">
+    <div class="cta-banner animate-in">
+      <div>
+        <h2 class="cta-banner-title">מוכן להתחיל?<br>פרסם את הציוד שלך היום.</h2>
+        <p class="cta-banner-sub">תהליך רישום של 10 דקות. ציוד ראשון מפורסם בחינם.</p>
+      </div>
+      <div class="d-flex gap-4" style="flex-wrap:wrap; flex-shrink:0;">
+        <a href="list-equipment.html" class="btn btn-white btn-lg">הצג ציוד עכשיו ←</a>
+        <a href="marketplace.html" class="btn btn-lg" style="color:white; border:1.5px solid rgba(255,255,255,0.4); background:rgba(255,255,255,0.1);">חפש ציוד לשכירה</a>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- Footer -->
+<footer class="footer">
+  <div class="container">
+    <div class="footer-grid">
+      <div>
+        <a href="index.html" class="nav-logo">
+          <div class="nav-logo-mark"><svg viewBox="0 0 24 24"><path d="M12 3L2 9l10 6 10-6-10-6z"/><path d="M2 15l10 6 10-6"/></svg></div>
+          <span class="nav-logo-text" style="color:white;">ASSET<span style="color:var(--primary-300);">-LINK</span></span>
+        </a>
+        <p class="footer-brand-tagline">פלטפורמת שיתוף הציוד החקלאי והתעשייתי הגדולה בישראל. בבעלות → בשימושיות.</p>
+        <div class="d-flex gap-3 mt-4">
+          <div class="footer-partner-badge">🛡️ SSL מאובטח</div>
+          <div class="footer-partner-badge">✅ ISO 27001</div>
+        </div>
+      </div>
+      <div>
+        <div class="footer-col-title">הפלטפורמה</div>
+        <div class="footer-links">
+          <a href="marketplace.html" class="footer-link">שוק הציוד</a>
+          <a href="list-equipment.html" class="footer-link">פרסם ציוד</a>
+          <a href="dashboard.html" class="footer-link">לוח בקרה</a>
+          <a href="how-it-works.html" class="footer-link">איך זה עובד</a>
+          <a href="sustainability.html" class="footer-link">קיימות</a>
+        </div>
+      </div>
+      <div>
+        <div class="footer-col-title">קטגוריות</div>
+        <div class="footer-links">
+          <a href="marketplace.html" class="footer-link">טרקטורים</a>
+          <a href="marketplace.html" class="footer-link">קוצרים וקומביינים</a>
+          <a href="marketplace.html" class="footer-link">ציוד ריסוס</a>
+          <a href="marketplace.html" class="footer-link">מחפרים ודחפורים</a>
+          <a href="marketplace.html" class="footer-link">מלגזות</a>
+          <a href="marketplace.html" class="footer-link">ציוד השקיה</a>
+        </div>
+      </div>
+      <div>
+        <div class="footer-col-title">חברה ותמיכה</div>
+        <div class="footer-links">
+          <a href="#" class="footer-link">אודות ASSET-LINK</a>
+          <a href="#" class="footer-link">צור קשר</a>
+          <a href="#" class="footer-link">תנאי שימוש</a>
+          <a href="#" class="footer-link">מדיניות פרטיות</a>
+          <a href="#" class="footer-link">ביטוח ובטיחות</a>
+          <a href="#" class="footer-link">שאלות נפוצות</a>
+        </div>
+      </div>
+    </div>
+    <div class="footer-bottom">
+      <span>© 2025 ASSET-LINK בע"מ · כל הזכויות שמורות · פלטפורמת שיתוף ציוד חקלאי ותעשייתי</span>
+      <div class="footer-partner-badges">
+        <span class="footer-partner-badge">🌱 B-Corp Certified</span>
+        <span class="footer-partner-badge">💧 Climate Positive</span>
+      </div>
+    </div>
+  </div>
+</footer>
+
+<script src="js/main.js"></script>
+</body>
+</html>

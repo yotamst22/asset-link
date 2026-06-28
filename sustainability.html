@@ -1,0 +1,724 @@
+<!DOCTYPE html>
+<html lang="he" dir="rtl">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>קיימות ואימפקט — ASSET-LINK</title>
+  <link rel="stylesheet" href="css/styles.css">
+  <style>
+    /* Hero */
+    .sus-hero {
+      min-height: 92vh;
+      background: linear-gradient(175deg, #0D2818 0%, #1B4332 35%, #2D6A4F 65%, #40916C 100%);
+      display: flex;
+      align-items: center;
+      padding-top: var(--nav-h);
+      position: relative;
+      overflow: hidden;
+    }
+
+    .sus-hero::before {
+      content: '';
+      position: absolute;
+      inset: 0;
+      background: url('https://images.unsplash.com/photo-1464226184884-fa280b87c399?auto=format&fit=crop&w=1600&q=50') center/cover;
+      opacity: 0.12;
+    }
+
+    .sus-hero-grid {
+      position: absolute;
+      inset: 0;
+      background-image:
+        radial-gradient(circle at 20% 80%, rgba(116,198,157,0.08) 0%, transparent 50%),
+        radial-gradient(circle at 80% 20%, rgba(183,228,199,0.06) 0%, transparent 50%);
+    }
+
+    .sus-hero-content { position: relative; z-index: 2; padding: 80px 0; }
+
+    .sus-hero-eyebrow {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      background: rgba(116,198,157,0.2);
+      border: 1px solid rgba(116,198,157,0.35);
+      border-radius: var(--r-full);
+      padding: 8px 20px;
+      font-size: 0.875rem;
+      font-weight: 700;
+      color: var(--primary-300);
+      margin-bottom: 28px;
+    }
+
+    .sus-hero h1 {
+      color: white;
+      font-size: clamp(2.5rem, 5vw, 4rem);
+      margin-bottom: 20px;
+      letter-spacing: -0.03em;
+    }
+
+    .sus-hero h1 em {
+      font-style: normal;
+      color: var(--primary-300);
+    }
+
+    .sus-hero-sub {
+      font-size: 1.1875rem;
+      color: rgba(255,255,255,0.75);
+      max-width: 580px;
+      line-height: 1.75;
+      margin-bottom: 40px;
+    }
+
+    /* Big impact numbers */
+    .impact-grid {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 20px;
+    }
+
+    .impact-card {
+      background: rgba(255,255,255,0.08);
+      border: 1px solid rgba(255,255,255,0.15);
+      border-radius: var(--r-xl);
+      padding: 28px 24px;
+      text-align: center;
+      backdrop-filter: blur(8px);
+      transition: var(--ease-slow);
+    }
+
+    .impact-card:hover {
+      background: rgba(255,255,255,0.14);
+      transform: translateY(-4px);
+    }
+
+    .impact-icon { font-size: 2rem; margin-bottom: 12px; }
+
+    .impact-val {
+      font-size: 2.25rem;
+      font-weight: 900;
+      color: var(--primary-300);
+      letter-spacing: -0.04em;
+      line-height: 1;
+      margin-bottom: 6px;
+    }
+
+    .impact-label {
+      font-size: 0.875rem;
+      color: rgba(255,255,255,0.65);
+      line-height: 1.5;
+    }
+
+    /* Sections */
+    .sus-section-dark {
+      background: var(--primary-dark);
+      color: rgba(255,255,255,0.85);
+    }
+
+    /* The problem -->  solution visual */
+    .problem-solution {
+      display: grid;
+      grid-template-columns: 1fr 80px 1fr;
+      gap: 0;
+      align-items: center;
+    }
+
+    .ps-side {
+      padding: 40px 36px;
+      border-radius: var(--r-xl);
+    }
+
+    .ps-problem { background: var(--error-light); border: 1.5px solid #FCA5A5; }
+    .ps-solution { background: var(--primary-50); border: 1.5px solid var(--primary-200); }
+
+    .ps-arrow {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 2rem;
+      color: var(--n-400);
+    }
+
+    .ps-title { font-size: 1.125rem; font-weight: 800; margin-bottom: 16px; }
+    .ps-item  { display: flex; align-items: flex-start; gap: 10px; padding: 8px 0; font-size: 0.9375rem; border-bottom: 1px solid rgba(0,0,0,0.06); }
+    .ps-item:last-child { border-bottom: none; }
+
+    /* Carbon calc */
+    .carbon-card {
+      background: white;
+      border-radius: var(--r-xl);
+      border: 1px solid var(--border-light);
+      padding: 36px;
+    }
+
+    .carbon-bar-wrap { margin-top: 24px; }
+
+    .carbon-row {
+      display: flex;
+      align-items: center;
+      gap: 16px;
+      margin-bottom: 14px;
+    }
+
+    .carbon-label { width: 180px; font-size: 0.875rem; font-weight: 600; color: var(--n-700); text-align: right; flex-shrink: 0; }
+    .carbon-track { flex: 1; height: 14px; background: var(--n-100); border-radius: var(--r-full); overflow: hidden; }
+    .carbon-fill  { height: 100%; border-radius: var(--r-full); }
+    .carbon-fill.bad  { background: linear-gradient(90deg, #FCA5A5, #DC2626); }
+    .carbon-fill.good { background: linear-gradient(90deg, var(--primary-300), var(--primary)); }
+    .carbon-val { width: 80px; font-size: 0.8125rem; font-weight: 700; color: var(--n-800); text-align: left; flex-shrink: 0; }
+
+    /* UN SDGs */
+    .sdg-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 16px; }
+
+    .sdg-card {
+      border-radius: var(--r-lg);
+      padding: 24px 20px;
+      text-align: center;
+      color: white;
+      transition: var(--ease-slow);
+    }
+
+    .sdg-card:hover { transform: translateY(-4px); box-shadow: var(--sh-lg); }
+
+    .sdg-num  { font-size: 2.25rem; font-weight: 900; margin-bottom: 6px; }
+    .sdg-name { font-size: 0.875rem; font-weight: 700; opacity: 0.9; margin-bottom: 8px; }
+    .sdg-desc { font-size: 0.8rem; opacity: 0.75; line-height: 1.5; }
+
+    /* Timeline: circular economy */
+    .circular-diagram {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 0;
+      flex-wrap: wrap;
+    }
+
+    .circ-step {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 12px;
+      flex: 1;
+      min-width: 140px;
+      max-width: 180px;
+      text-align: center;
+    }
+
+    .circ-icon {
+      width: 72px; height: 72px;
+      border-radius: var(--r-full);
+      display: flex; align-items: center; justify-content: center;
+      font-size: 1.75rem;
+      border: 3px solid var(--primary-200);
+      background: var(--primary-50);
+      position: relative;
+    }
+
+    .circ-arrow {
+      font-size: 1.5rem;
+      color: var(--primary-300);
+      padding-top: 20px;
+      flex-shrink: 0;
+    }
+
+    .circ-label { font-size: 0.875rem; font-weight: 700; color: var(--n-900); }
+    .circ-sub   { font-size: 0.8rem; color: var(--n-500); line-height: 1.4; }
+
+    /* Commitment cards */
+    .commit-card {
+      background: white;
+      border-radius: var(--r-xl);
+      border: 1px solid var(--border-light);
+      padding: 32px 28px;
+      transition: var(--ease-slow);
+    }
+
+    .commit-card:hover { transform: translateY(-4px); box-shadow: var(--sh-lg); border-color: var(--primary-200); }
+
+    .commit-icon {
+      width: 56px; height: 56px;
+      border-radius: var(--r-lg);
+      background: var(--primary-100);
+      display: flex; align-items: center; justify-content: center;
+      font-size: 1.625rem;
+      margin-bottom: 18px;
+    }
+
+    /* Progress tracker */
+    .goal-tracker {
+      background: white;
+      border-radius: var(--r-xl);
+      border: 1px solid var(--border-light);
+      padding: 28px;
+    }
+
+    .goal-item { margin-bottom: 20px; }
+    .goal-item:last-child { margin-bottom: 0; }
+
+    .goal-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: baseline;
+      margin-bottom: 8px;
+    }
+
+    .goal-name  { font-size: 0.9375rem; font-weight: 700; color: var(--n-900); }
+    .goal-pct   { font-size: 0.875rem; font-weight: 700; color: var(--primary); }
+    .goal-sub   { font-size: 0.8125rem; color: var(--n-500); margin-bottom: 6px; }
+
+    /* Report download */
+    .report-card {
+      background: linear-gradient(135deg, var(--primary) 0%, var(--primary-600) 100%);
+      border-radius: var(--r-xl);
+      padding: 40px 36px;
+      color: white;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 24px;
+    }
+
+    /* Manifesto section */
+    .manifesto-section {
+      background: var(--earth-50);
+      border-top: 1px solid var(--earth-100);
+      border-bottom: 1px solid var(--earth-100);
+    }
+
+    .manifesto-quote {
+      font-size: clamp(1.25rem, 2.5vw, 2rem);
+      font-weight: 800;
+      color: var(--primary);
+      line-height: 1.45;
+      letter-spacing: -0.02em;
+      max-width: 780px;
+      margin: 0 auto;
+      text-align: center;
+    }
+
+    .manifesto-attr {
+      text-align: center;
+      margin-top: 16px;
+      font-size: 0.9rem;
+      color: var(--n-500);
+    }
+  </style>
+</head>
+<body>
+
+<nav class="nav" id="main-nav">
+  <div class="container nav-inner">
+    <a href="index.html" class="nav-logo">
+      <div class="nav-logo-mark"><svg viewBox="0 0 24 24"><path d="M12 3L2 9l10 6 10-6-10-6z"/><path d="M2 15l10 6 10-6"/></svg></div>
+      <span class="nav-logo-text">ASSET<span>-LINK</span></span>
+    </a>
+    <div class="nav-links">
+      <a href="marketplace.html" class="nav-link">שוק הציוד</a>
+      <a href="how-it-works.html" class="nav-link">איך זה עובד</a>
+      <a href="list-equipment.html" class="nav-link">הצג ציוד</a>
+      <a href="dashboard.html" class="nav-link">לוח בקרה</a>
+      <a href="sustainability.html" class="nav-link active">קיימות</a>
+    </div>
+    <div class="nav-actions">
+      <a href="#" class="nav-login">כניסה</a>
+      <a href="list-equipment.html" class="btn btn-primary btn-sm">הצג את הציוד שלך</a>
+    </div>
+  </div>
+</nav>
+
+<!-- Hero -->
+<section class="sus-hero">
+  <div class="sus-hero-grid"></div>
+  <div class="container sus-hero-content">
+    <div class="sus-hero-eyebrow">🌱 קיימות ואימפקט סביבתי — 2025</div>
+    <h1>כלכלה מעגלית<br>מתחילה<br><em>בשדה.</em></h1>
+    <p class="sus-hero-sub">
+      כל מכונה ששיתפנו — זו מכונה שלא נרכשה מחדש. כל עסקה בפלטפורמה מפחיתה ייצור תעשייתי, פחמן, ובזבוז. זה לא שיווק ירוק — זה המודל העסקי שלנו.
+    </p>
+    <div style="display:flex; gap:14px; flex-wrap:wrap;">
+      <a href="marketplace.html" class="btn btn-white btn-lg btn-pill">🔍 מצא ציוד</a>
+      <a href="#impact" class="btn btn-lg btn-pill" style="color:white; border:1.5px solid rgba(255,255,255,0.35); background:rgba(255,255,255,0.1);">↓ ראה אימפקט</a>
+    </div>
+
+    <!-- Impact Numbers -->
+    <div id="impact" class="impact-grid" style="margin-top:64px;">
+      <div class="impact-card animate-in">
+        <div class="impact-icon">🚜</div>
+        <div class="impact-val" data-count-up="523" data-suffix="+">523+</div>
+        <div class="impact-label">מכונות בשיתוף<br>ולא בבעלות</div>
+      </div>
+      <div class="impact-card animate-in">
+        <div class="impact-icon">🌍</div>
+        <div class="impact-val" data-count-up="2840" data-suffix=" טון">2,840 טון</div>
+        <div class="impact-label">CO₂ נחסך<br>מאז השקה</div>
+      </div>
+      <div class="impact-card animate-in">
+        <div class="impact-icon">♻️</div>
+        <div class="impact-val" data-count-up="73" data-suffix="%">73%</div>
+        <div class="impact-label">ניצולת ציוד ממוצעת<br>לעומת 38% בתעשייה</div>
+      </div>
+      <div class="impact-card animate-in">
+        <div class="impact-icon">💰</div>
+        <div class="impact-val" data-count-up="2.4" data-prefix="₪" data-suffix="M">₪2.4M</div>
+        <div class="impact-label">נחסכו לחוכרים<br>במקום רכישות</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- Manifesto -->
+<section class="manifesto-section section-sm">
+  <div class="container">
+    <blockquote class="manifesto-quote animate-in">
+      "ישראל מייצרת פחמן מיותר בכל פעם שחקלאי קונה מכונה שחקלאי אחר, 20 קילומטר ממנו, כבר מחזיק — ולא משתמש בה 65% מהשנה."
+    </blockquote>
+    <p class="manifesto-attr">— האתגר שהוביל להקמת ASSET-LINK, 2024</p>
+  </div>
+</section>
+
+<!-- The Problem & Solution -->
+<section class="section" style="background:var(--bg);">
+  <div class="container">
+    <div class="section-header animate-in">
+      <div class="section-tag">🔍 הבעיה שאנחנו פותרים</div>
+      <h2 class="section-title">ציוד חקלאי: המשאב הכי בזבזני בחקלאות</h2>
+      <p class="section-sub">מכונות חקלאיות ותעשייתיות עומדות ריקות 60%–70% מהשנה — תוך כדי שמישהו אחר קונה אותן מחדש.</p>
+    </div>
+
+    <div class="problem-solution animate-in">
+      <div class="ps-side ps-problem">
+        <div class="ps-title" style="color:#991B1B;">❌ לפני ASSET-LINK</div>
+        <div class="ps-item" style="color:#7F1D1D;"><span>🏭</span> ייצור ציוד מיותר: כל מכונה שנרכשת = טון פחמן ייצורי</div>
+        <div class="ps-item" style="color:#7F1D1D;"><span>💸</span> הון מושקע קפוא: ציוד בשווי ₪500K עומד ריק 250 ימים בשנה</div>
+        <div class="ps-item" style="color:#7F1D1D;"><span>⛽</span> שרשרת אספקה מיותרת: יבוא, הובלה, אחסון כפול</div>
+        <div class="ps-item" style="color:#7F1D1D;"><span>🗑️</span> פחת מואץ: ציוד מתיישן גם כשאינו בשימוש</div>
+        <div class="ps-item" style="color:#7F1D1D;"><span>📉</span> נגישות: חקלאים קטנים לא יכולים להרשות לעצמם ציוד מתקדם</div>
+      </div>
+
+      <div class="ps-arrow">⟹</div>
+
+      <div class="ps-side ps-solution">
+        <div class="ps-title" style="color:var(--primary);">✅ עם ASSET-LINK</div>
+        <div class="ps-item" style="color:var(--primary-700);"><span>♻️</span> מכונה אחת משרתת 5–8 עסקים — לא 5–8 מכונות נרכשות</div>
+        <div class="ps-item" style="color:var(--primary-700);"><span>💰</span> הון זורם: ציוד מרוויח ₪37K–₪178K בשנה במקום להתיישן</div>
+        <div class="ps-item" style="color:var(--primary-700);"><span>🌱</span> 2,840 טון CO₂ נחסכו מאז השקה — ועולה בכל יום</div>
+        <div class="ps-item" style="color:var(--primary-700);"><span>📈</span> ניצולת 73%: מכונה עובדת יותר, מתיישנת פחות</div>
+        <div class="ps-item" style="color:var(--primary-700);"><span>🌾</span> נגישות: חקלאי קטן מקבל ציוד ₪1.2M ב-₪3,800 לשבוע</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- Circular Economy Diagram -->
+<section class="section" style="background:white;">
+  <div class="container">
+    <div class="section-header animate-in">
+      <div class="section-tag">♻️ כלכלה מעגלית</div>
+      <h2 class="section-title">מחזור חיים מלא — לא שרשרת לינארית</h2>
+      <p class="section-sub">הדגם הכלכלי של ASSET-LINK מחקה את עקרונות הכלכלה המעגלית: ניצול מלא, עד שחיי הציוד נגמרים.</p>
+    </div>
+
+    <div class="circular-diagram animate-in">
+      <div class="circ-step">
+        <div class="circ-icon">🏭</div>
+        <div class="circ-label">ייצור</div>
+        <div class="circ-sub">מכונה אחת מיוצרת</div>
+      </div>
+      <div class="circ-arrow">→</div>
+      <div class="circ-step">
+        <div class="circ-icon">🏘️</div>
+        <div class="circ-label">בעלות ראשונה</div>
+        <div class="circ-sub">קיבוץ / חקלאי רוכש</div>
+      </div>
+      <div class="circ-arrow">→</div>
+      <div class="circ-step">
+        <div class="circ-icon" style="background:var(--primary-100); border-color:var(--primary); border-width:3px;">🔗</div>
+        <div class="circ-label" style="color:var(--primary);">ASSET-LINK</div>
+        <div class="circ-sub" style="color:var(--primary-600);">5–8 עסקים נוספים משתמשים</div>
+      </div>
+      <div class="circ-arrow">→</div>
+      <div class="circ-step">
+        <div class="circ-icon">🔧</div>
+        <div class="circ-label">תחזוקה & שיפוץ</div>
+        <div class="circ-sub">ניצול מרבי לפני פחת</div>
+      </div>
+      <div class="circ-arrow">→</div>
+      <div class="circ-step">
+        <div class="circ-icon">♻️</div>
+        <div class="circ-label">מחזור חומרים</div>
+        <div class="circ-sub">בסיום חיים שלמים</div>
+      </div>
+    </div>
+
+    <div class="info-box text-center mt-8" style="max-width:680px; margin:32px auto 0;">
+      🌍 <strong>השוואה:</strong> בשרשרת לינארית מסורתית, 5 חקלאים שצריכים טרקטור = 5 מכונות מיוצרות. דרך ASSET-LINK — מכונה אחת. 80% פחות פחמן ייצורי.
+    </div>
+  </div>
+</section>
+
+<!-- Carbon Impact -->
+<section class="section" style="background:var(--bg);">
+  <div class="container">
+    <div class="section-header animate-in">
+      <div class="section-tag">🌍 אימפקט פחמן</div>
+      <h2 class="section-title">כמה פחמן אנחנו חוסכים?</h2>
+      <p class="section-sub">כל השכרה מחליפה רכישה חלקית. כך מחשבים את האימפקט בפועל.</p>
+    </div>
+
+    <div class="grid-2" style="gap:32px; align-items:start;">
+      <div class="carbon-card animate-in">
+        <h4 style="margin-bottom:6px;">פחמן ייצורי — הצד הנסתר</h4>
+        <p style="font-size:0.9rem; color:var(--n-500); margin-bottom:20px;">כמות ה-CO₂ הכלואה בייצור מכונה (Carbon Embedded) — נחסכת כשלא נרכשת מכונה נוספת</p>
+
+        <div class="carbon-bar-wrap">
+          <div class="carbon-row">
+            <div class="carbon-label">קומביין גדול</div>
+            <div class="carbon-track"><div class="carbon-fill bad" style="width:95%"></div></div>
+            <div class="carbon-val">38 טון CO₂</div>
+          </div>
+          <div class="carbon-row">
+            <div class="carbon-label">מחפר 130 כ"ס</div>
+            <div class="carbon-track"><div class="carbon-fill bad" style="width:72%"></div></div>
+            <div class="carbon-val">28 טון CO₂</div>
+          </div>
+          <div class="carbon-row">
+            <div class="carbon-label">טרקטור 100+ כ"ס</div>
+            <div class="carbon-track"><div class="carbon-fill bad" style="width:55%"></div></div>
+            <div class="carbon-val">22 טון CO₂</div>
+          </div>
+          <div class="carbon-row">
+            <div class="carbon-label">דחפור</div>
+            <div class="carbon-track"><div class="carbon-fill bad" style="width:88%"></div></div>
+            <div class="carbon-val">35 טון CO₂</div>
+          </div>
+          <div class="carbon-row">
+            <div class="carbon-label">מרסס גדול</div>
+            <div class="carbon-track"><div class="carbon-fill bad" style="width:38%"></div></div>
+            <div class="carbon-val">15 טון CO₂</div>
+          </div>
+        </div>
+
+        <div style="margin-top:20px; padding:16px; background:var(--primary-50); border-radius:var(--r); border:1px solid var(--primary-100);">
+          <div style="font-size:0.8125rem; color:var(--primary-700); line-height:1.6;">
+            📊 <strong>מתודולוגיה:</strong> מחושב לפי LCA (Life Cycle Assessment) של ה-OECD לציוד חקלאי ותעשייתי כבד. כל השכרה שמחליפה רכישה — חוסכת את הפחמן הייצורי ביחס לימי שימוש.
+          </div>
+        </div>
+      </div>
+
+      <div style="display:flex; flex-direction:column; gap:20px;">
+        <!-- SDG Goals -->
+        <div class="card-base p-6 animate-in">
+          <h4 style="margin-bottom:16px;">🎯 יעדי ASSET-LINK לסוף 2026</h4>
+          <div class="goal-tracker">
+            <div class="goal-item">
+              <div class="goal-header">
+                <div class="goal-name">מכונות פעילות בפלטפורמה</div>
+                <div class="goal-pct">52%</div>
+              </div>
+              <div class="goal-sub">523 מתוך יעד 1,000</div>
+              <div class="progress"><div class="progress-bar" style="width:52%"></div></div>
+            </div>
+            <div class="goal-item">
+              <div class="goal-header">
+                <div class="goal-name">טון CO₂ נחסך (ייצורי)</div>
+                <div class="goal-pct">47%</div>
+              </div>
+              <div class="goal-sub">2,840 מתוך יעד 6,000 טון</div>
+              <div class="progress"><div class="progress-bar" style="width:47%"></div></div>
+            </div>
+            <div class="goal-item">
+              <div class="goal-header">
+                <div class="goal-name">אזורים מכוסים בישראל</div>
+                <div class="goal-pct">78%</div>
+              </div>
+              <div class="goal-sub">31 מתוך יעד 40 אזורים</div>
+              <div class="progress"><div class="progress-bar" style="width:78%"></div></div>
+            </div>
+            <div class="goal-item" style="margin-bottom:0;">
+              <div class="goal-header">
+                <div class="goal-name">ניצולת ממוצעת ציוד</div>
+                <div class="goal-pct">73%</div>
+              </div>
+              <div class="goal-sub">73% מתוך יעד 80% (תעשייה: 38%)</div>
+              <div class="progress"><div class="progress-bar" style="width:73%"></div></div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Annual savings -->
+        <div class="card-base p-6 animate-in" style="background:linear-gradient(135deg,var(--primary-50),var(--earth-50));">
+          <h4 style="margin-bottom:16px;">📊 אימפקט מצטבר — 2024–2025</h4>
+          <div style="display:grid; grid-template-columns:1fr 1fr; gap:14px;">
+            <div style="text-align:center; background:white; border-radius:var(--r-lg); padding:16px; border:1px solid var(--border-light);">
+              <div style="font-size:1.5rem; font-weight:900; color:var(--primary); letter-spacing:-0.02em;">2,840</div>
+              <div style="font-size:0.8rem; color:var(--n-500); margin-top:4px;">טון CO₂ נחסך</div>
+            </div>
+            <div style="text-align:center; background:white; border-radius:var(--r-lg); padding:16px; border:1px solid var(--border-light);">
+              <div style="font-size:1.5rem; font-weight:900; color:var(--primary); letter-spacing:-0.02em;">187</div>
+              <div style="font-size:0.8rem; color:var(--n-500); margin-top:4px;">מכונות שלא נרכשו</div>
+            </div>
+            <div style="text-align:center; background:white; border-radius:var(--r-lg); padding:16px; border:1px solid var(--border-light);">
+              <div style="font-size:1.5rem; font-weight:900; color:var(--success); letter-spacing:-0.02em;">₪2.4M</div>
+              <div style="font-size:0.8rem; color:var(--n-500); margin-top:4px;">חיסכון לחוכרים</div>
+            </div>
+            <div style="text-align:center; background:white; border-radius:var(--r-lg); padding:16px; border:1px solid var(--border-light);">
+              <div style="font-size:1.5rem; font-weight:900; color:var(--warning); letter-spacing:-0.02em;">₪1.8M</div>
+              <div style="font-size:0.8rem; color:var(--n-500); margin-top:4px;">הכנסות לבעלי ציוד</div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- UN SDGs -->
+<section class="section" style="background:white;">
+  <div class="container">
+    <div class="section-header animate-in">
+      <div class="section-tag">🌐 מטרות פיתוח בר-קיימא</div>
+      <h2 class="section-title">ASSET-LINK ויעדי ה-SDG של האו"ם</h2>
+      <p class="section-sub">הפלטפורמה שלנו תורמת ישירות ל-4 מיעדי ה-SDG — לא כסלוגן, אלא כתוצאה ממדל ה-Usership.</p>
+    </div>
+
+    <div class="sdg-grid animate-in">
+      <div class="sdg-card" style="background:linear-gradient(135deg,#E5243B,#C0132A);">
+        <div class="sdg-num">8</div>
+        <div class="sdg-name">עבודה הגונה וצמיחה כלכלית</div>
+        <div class="sdg-desc">הכנסות נוספות לחקלאים ממה שכבר ברשותם. יצירת מקורות פרנסה חדשים.</div>
+      </div>
+      <div class="sdg-card" style="background:linear-gradient(135deg,#FD6925,#D4581E);">
+        <div class="sdg-num">9</div>
+        <div class="sdg-name">תשתיות וחדשנות</div>
+        <div class="sdg-desc">גישה לציוד תעשייתי לעסקים קטנים שלא יכולים להרשות לעצמם רכישה.</div>
+      </div>
+      <div class="sdg-card" style="background:linear-gradient(135deg,#3F7E44,#2D6A4F);">
+        <div class="sdg-num">12</div>
+        <div class="sdg-name">צריכה וייצור אחראיים</div>
+        <div class="sdg-desc">כלכלה מעגלית בפועל: ניצול מלא של משאבים קיימים, צמצום ייצור מיותר.</div>
+      </div>
+      <div class="sdg-card" style="background:linear-gradient(135deg,#3F7E44,#1B4332);">
+        <div class="sdg-num">13</div>
+        <div class="sdg-name">פעולה למען האקלים</div>
+        <div class="sdg-desc">הפחתת פחמן ייצורי, הפחתת שרשראות אספקה מיותרות, יעילות אנרגטית.</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- Our Commitments -->
+<section class="section" style="background:var(--bg);">
+  <div class="container">
+    <div class="section-header animate-in">
+      <div class="section-tag">🤝 המחויבויות שלנו</div>
+      <h2 class="section-title">לא רק דיבורים — מחויבויות מדידות</h2>
+      <p class="section-sub">קיימות אמיתית נמדדת בפעולות, לא בהצהרות.</p>
+    </div>
+
+    <div class="grid-3" style="gap:20px;">
+      <div class="commit-card animate-in">
+        <div class="commit-icon">📊</div>
+        <h5 style="margin-bottom:10px;">דיווח שקוף</h5>
+        <p style="font-size:0.9375rem;">דו"ח אימפקט שנתי פומבי. כל נתון מאומת על ידי גורם חיצוני. אין מניפולציה של מדדים.</p>
+      </div>
+      <div class="commit-card animate-in">
+        <div class="commit-icon">🌱</div>
+        <h5 style="margin-bottom:10px;">ניטרליות פחמן עד 2027</h5>
+        <p style="font-size:0.9375rem;">פעילות ASSET-LINK עצמה — שרתים, משרדים, נסיעות — תהיה carbon-neutral עד סוף 2027.</p>
+      </div>
+      <div class="commit-card animate-in">
+        <div class="commit-icon">🤝</div>
+        <h5 style="margin-bottom:10px;">שותפות עם עמותות</h5>
+        <p style="font-size:0.9375rem;">5% מרווחי ASSET-LINK מועברים לקרן לחקלאות בת-קיימא בישראל. שקוף ומדיד.</p>
+      </div>
+      <div class="commit-card animate-in">
+        <div class="commit-icon">📱</div>
+        <h5 style="margin-bottom:10px;">מדידת אימפקט אישי</h5>
+        <p style="font-size:0.9375rem;">כל חוכר ובעל ציוד יכול לראות את האימפקט הסביבתי האישי שלו בדשבורד. שיפור מתמיד.</p>
+      </div>
+      <div class="commit-card animate-in">
+        <div class="commit-icon">🏆</div>
+        <h5 style="margin-bottom:10px;">תמריצים לציוד ירוק</h5>
+        <p style="font-size:0.9375rem;">עמלה מופחתת (3% במקום 5%) לציוד חשמלי/היברידי. מתגמלים מה שאנחנו מאמינים בו.</p>
+      </div>
+      <div class="commit-card animate-in">
+        <div class="commit-icon">🎓</div>
+        <h5 style="margin-bottom:10px;">חינוך ומודעות</h5>
+        <p style="font-size:0.9375rem;">תוכן חינוכי חינמי לחקלאים על קיימות, ניהול משאבים וחקלאות פחמן-נמוכה.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- Impact Report Download -->
+<section class="section-sm">
+  <div class="container">
+    <div class="report-card animate-in">
+      <div>
+        <div style="font-size:0.8rem; font-weight:700; opacity:0.65; letter-spacing:0.08em; text-transform:uppercase; margin-bottom:8px;">📄 דו"ח אימפקט</div>
+        <h3 style="color:white; font-size:1.75rem; margin-bottom:8px;">Impact Report 2024–2025</h3>
+        <p style="color:rgba(255,255,255,0.7); font-size:0.9375rem; max-width:440px;">הנתונים המלאים, המתודולוגיה, ההשוואות התעשייתיות ותכנית ה-roadmap הסביבתי שלנו לשנים הבאות.</p>
+      </div>
+      <div style="flex-shrink:0; display:flex; flex-direction:column; gap:10px; align-items:center;">
+        <button class="btn btn-white btn-lg" onclick="alert('דו\"ח האימפקט המלא יהיה זמין ברבעון הראשון של 2026.')">
+          ⬇️ &nbsp; הורד PDF חינם
+        </button>
+        <span style="font-size:0.8rem; color:rgba(255,255,255,0.5);">48 עמודים · עברית · 2024–2025</span>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- Final CTA -->
+<section class="section" style="background:white; border-top:1px solid var(--border-light);">
+  <div class="container text-center">
+    <div class="section-header animate-in" style="margin-bottom:36px;">
+      <div class="section-tag">🌱 הצטרפו לתנועה</div>
+      <h2 class="section-title">קיימות מתחילה בהחלטה אחת</h2>
+      <p class="section-sub">בין שיש לך ציוד לשתף ובין שאתה מחפש לשכור — כל עסקה בפלטפורמה היא פעולה סביבתית אמיתית.</p>
+    </div>
+
+    <div style="display:grid; grid-template-columns:1fr 1fr; max-width:680px; margin:0 auto; gap:16px;">
+      <div style="background:var(--primary); border-radius:var(--r-xl); padding:32px 24px; text-align:center; color:white;">
+        <div style="font-size:2.5rem; margin-bottom:12px;">🚜</div>
+        <h4 style="color:white; margin-bottom:8px;">יש לך ציוד?</h4>
+        <p style="color:rgba(255,255,255,0.75); font-size:0.875rem; margin-bottom:20px;">פרסם אותו ועזור לאחרים — תוך כדי שאתה מרוויח</p>
+        <a href="list-equipment.html" class="btn btn-white btn-full">פרסם ציוד ←</a>
+      </div>
+      <div style="background:var(--earth-50); border-radius:var(--r-xl); padding:32px 24px; text-align:center; border:1.5px solid var(--earth-100);">
+        <div style="font-size:2.5rem; margin-bottom:12px;">🌾</div>
+        <h4 style="margin-bottom:8px;">צריך ציוד?</h4>
+        <p style="color:var(--n-600); font-size:0.875rem; margin-bottom:20px;">שכור במקום לקנות — חסוך כסף ופחמן</p>
+        <a href="marketplace.html" class="btn btn-primary btn-full">מצא ציוד ←</a>
+      </div>
+    </div>
+  </div>
+</section>
+
+<footer class="footer">
+  <div class="container">
+    <div class="footer-grid">
+      <div>
+        <a href="index.html" class="nav-logo"><div class="nav-logo-mark"><svg viewBox="0 0 24 24"><path d="M12 3L2 9l10 6 10-6-10-6z"/><path d="M2 15l10 6 10-6"/></svg></div><span class="nav-logo-text" style="color:white;">ASSET<span style="color:var(--primary-300);">-LINK</span></span></a>
+        <p class="footer-brand-tagline">פלטפורמת שיתוף הציוד החקלאי והתעשייתי בישראל. בבעלות → בשימושיות.</p>
+        <div class="d-flex gap-3 mt-4">
+          <div class="footer-partner-badge">🌱 B-Corp Certified</div>
+          <div class="footer-partner-badge">💧 Climate Positive</div>
+        </div>
+      </div>
+      <div><div class="footer-col-title">הפלטפורמה</div><div class="footer-links"><a href="marketplace.html" class="footer-link">שוק הציוד</a><a href="list-equipment.html" class="footer-link">פרסם ציוד</a><a href="dashboard.html" class="footer-link">לוח בקרה</a><a href="how-it-works.html" class="footer-link">איך זה עובד</a></div></div>
+      <div><div class="footer-col-title">קיימות</div><div class="footer-links"><a href="#" class="footer-link">דו"ח אימפקט 2025</a><a href="#" class="footer-link">מתודולוגיה</a><a href="#" class="footer-link">שותפויות ירוקות</a><a href="#" class="footer-link">SDG Alignment</a></div></div>
+      <div><div class="footer-col-title">חברה</div><div class="footer-links"><a href="#" class="footer-link">אודות</a><a href="#" class="footer-link">צוות</a><a href="#" class="footer-link">משקיעים</a><a href="#" class="footer-link">צור קשר</a></div></div>
+    </div>
+    <div class="footer-bottom">
+      <span>© 2025 ASSET-LINK בע"מ · כל הזכויות שמורות</span>
+      <div class="footer-partner-badges">
+        <span class="footer-partner-badge">🛡️ ISO 27001</span>
+        <span class="footer-partner-badge">🌍 GHG Protocol</span>
+      </div>
+    </div>
+  </div>
+</footer>
+
+<script src="js/main.js"></script>
+</body>
+</html>
