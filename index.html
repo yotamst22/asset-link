@@ -329,12 +329,12 @@
       <a href="marketplace.html" class="nav-link">שוק הציוד</a>
       <a href="how-it-works.html" class="nav-link">איך זה עובד</a>
       <a href="list-equipment.html" class="nav-link">הצג ציוד</a>
-      <a href="dashboard.html" class="nav-link">לוח בקרה</a>
+      <a href="owner/dashboard.html" class="nav-link">לוח בקרה</a>
       <a href="sustainability.html" class="nav-link">קיימות</a>
     </div>
     <div class="nav-actions">
-      <a href="#" class="nav-login">כניסה</a>
-      <a href="list-equipment.html" class="btn btn-primary btn-sm">הצג את הציוד שלך</a>
+      <a href="auth.html" class="nav-login">כניסה לפלטפורמה</a>
+      <a href="auth.html?role=owner" class="btn btn-primary btn-sm">הצג את הציוד שלך</a>
     </div>
   </div>
 </nav>
@@ -355,10 +355,10 @@
     </p>
     <div class="hero-ctas">
       <a href="marketplace.html" class="btn btn-white btn-lg btn-pill">
-        🔍 &nbsp; מצא ציוד עכשיו
+        🔍 &nbsp; אני רוצה לשכור ציוד →
       </a>
-      <a href="list-equipment.html" class="btn btn-secondary btn-lg btn-pill" style="border-color:rgba(255,255,255,0.4); color:white; background:rgba(255,255,255,0.1); backdrop-filter:blur(8px);">
-        ＋ &nbsp; הצג את הציוד שלך
+      <a href="auth.html?role=owner" class="btn btn-secondary btn-lg btn-pill" style="border-color:rgba(255,255,255,0.4); color:white; background:rgba(255,255,255,0.1); backdrop-filter:blur(8px);">
+        💰 &nbsp; אני רוצה להרוויח מהציוד שלי →
       </a>
     </div>
     <div class="hero-search-wrap">
@@ -863,12 +863,12 @@
       <div>
         <div class="footer-col-title">חברה ותמיכה</div>
         <div class="footer-links">
-          <a href="#" class="footer-link">אודות ASSET-LINK</a>
-          <a href="#" class="footer-link">צור קשר</a>
-          <a href="#" class="footer-link">תנאי שימוש</a>
-          <a href="#" class="footer-link">מדיניות פרטיות</a>
-          <a href="#" class="footer-link">ביטוח ובטיחות</a>
-          <a href="#" class="footer-link">שאלות נפוצות</a>
+          <a href="how-it-works.html" class="footer-link">אודות ASSET-LINK</a>
+          <a href="how-it-works.html" class="footer-link">צור קשר</a>
+          <a href="how-it-works.html#terms" class="footer-link">תנאי שימוש</a>
+          <a href="how-it-works.html#privacy" class="footer-link">מדיניות פרטיות</a>
+          <a href="how-it-works.html" class="footer-link">ביטוח ובטיחות</a>
+          <a href="how-it-works.html" class="footer-link">שאלות נפוצות</a>
         </div>
       </div>
     </div>
@@ -883,5 +883,6 @@
 </footer>
 
 <script src="js/main.js"></script>
+<script src="js/auth.js"></script>
 </body>
 </html>

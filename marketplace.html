@@ -10,32 +10,13 @@
       background: linear-gradient(160deg, var(--primary) 0%, var(--primary-700) 100%);
       padding: calc(var(--nav-h) + 36px) 0 40px;
     }
+    .marketplace-hero h1 { color: white; font-size: clamp(1.75rem, 3vw, 2.5rem); margin-bottom: 8px; }
+    .marketplace-hero p { color: rgba(255,255,255,0.7); font-size: 1rem; }
+    .mh-search { margin-top: 24px; max-width: 800px; }
 
-    .marketplace-hero h1 {
-      color: white;
-      font-size: clamp(1.75rem, 3vw, 2.5rem);
-      margin-bottom: 8px;
-    }
+    .marketplace-body { padding: 32px 0 64px; }
 
-    .marketplace-hero p {
-      color: rgba(255,255,255,0.7);
-      font-size: 1rem;
-    }
-
-    .mh-search {
-      margin-top: 24px;
-      max-width: 800px;
-    }
-
-    .marketplace-body {
-      padding: 32px 0 64px;
-    }
-
-    .marketplace-layout {
-      display: flex;
-      gap: 24px;
-      align-items: flex-start;
-    }
+    .marketplace-layout { display: flex; gap: 24px; align-items: flex-start; }
 
     .filter-sidebar {
       width: 268px;
@@ -55,11 +36,7 @@
       gap: 12px;
     }
 
-    .results-count {
-      font-size: 0.9375rem;
-      color: var(--n-600);
-    }
-
+    .results-count { font-size: 0.9375rem; color: var(--n-600); }
     .results-count strong { color: var(--n-900); font-weight: 700; }
 
     .sort-select {
@@ -72,7 +49,6 @@
       background: white;
       cursor: pointer;
     }
-
     .sort-select:focus { outline: none; border-color: var(--primary-400); }
 
     .eq-grid {
@@ -80,75 +56,9 @@
       grid-template-columns: repeat(3, 1fr);
       gap: 18px;
     }
-
     @media (max-width: 1100px) { .eq-grid { grid-template-columns: repeat(2, 1fr); } }
     @media (max-width: 700px)  { .eq-grid { grid-template-columns: 1fr; } }
 
-    .filter-tag-strip {
-      display: flex;
-      gap: 8px;
-      flex-wrap: wrap;
-      margin-bottom: 18px;
-    }
-
-    .filter-tag {
-      display: inline-flex;
-      align-items: center;
-      gap: 6px;
-      padding: 5px 12px;
-      background: var(--primary-100);
-      color: var(--primary);
-      border-radius: var(--r-full);
-      font-size: 0.8125rem;
-      font-weight: 600;
-      cursor: pointer;
-    }
-
-    .filter-tag .remove { font-size: 0.75rem; opacity: 0.7; }
-    .filter-tag:hover .remove { opacity: 1; }
-
-    .pagination {
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      gap: 6px;
-      margin-top: 40px;
-    }
-
-    .page-btn {
-      width: 38px; height: 38px;
-      display: flex; align-items: center; justify-content: center;
-      border-radius: var(--r-sm);
-      font-size: 0.9rem;
-      font-weight: 600;
-      color: var(--n-600);
-      background: white;
-      border: 1.5px solid var(--border);
-      cursor: pointer;
-      transition: var(--ease);
-    }
-
-    .page-btn:hover { border-color: var(--primary-400); color: var(--primary); }
-    .page-btn.active { background: var(--primary); color: white; border-color: var(--primary); }
-
-    .map-toggle {
-      display: flex;
-      align-items: center;
-      gap: 8px;
-      padding: 8px 16px;
-      border: 1.5px solid var(--border);
-      border-radius: var(--r-sm);
-      font-size: 0.9rem;
-      font-weight: 600;
-      color: var(--n-700);
-      background: white;
-      cursor: pointer;
-      transition: var(--ease);
-    }
-
-    .map-toggle:hover { border-color: var(--primary-400); color: var(--primary); }
-
-    /* Price range slider */
     .range-slider {
       -webkit-appearance: none;
       width: 100%;
@@ -158,7 +68,6 @@
       outline: none;
       margin: 12px 0;
     }
-
     .range-slider::-webkit-slider-thumb {
       -webkit-appearance: none;
       width: 20px; height: 20px;
@@ -169,18 +78,67 @@
       box-shadow: var(--sh-sm);
     }
 
-    .availability-legend {
-      display: flex;
-      gap: 16px;
-      font-size: 0.8125rem;
-      color: var(--n-500);
-      margin-top: 8px;
+    .map-toggle {
+      display: flex; align-items: center; gap: 8px;
+      padding: 8px 16px;
+      border: 1.5px solid var(--border);
+      border-radius: var(--r-sm);
+      font-size: 0.9rem; font-weight: 600; color: var(--n-700);
+      background: white; cursor: pointer; transition: var(--ease);
+      font-family: var(--font);
+    }
+    .map-toggle:hover { border-color: var(--primary-400); color: var(--primary); }
+
+    /* Filter mobile toggle */
+    .filter-mobile-toggle {
+      display: none;
+      align-items: center; gap: 8px;
+      padding: 9px 16px;
+      border: 1.5px solid var(--border);
+      border-radius: var(--r-sm);
+      font-size: 0.9rem; font-weight: 600; color: var(--n-700);
+      background: white; cursor: pointer; font-family: var(--font);
     }
 
-    .legend-dot {
-      width: 10px; height: 10px;
-      border-radius: var(--r-full);
-      flex-shrink: 0;
+    /* Map Modal */
+    .map-modal {
+      display: none;
+      position: fixed; inset: 0;
+      background: rgba(0,0,0,0.6);
+      z-index: 2000;
+      align-items: center; justify-content: center;
+      backdrop-filter: blur(4px);
+    }
+    .map-modal-box {
+      background: white;
+      border-radius: var(--r-xl);
+      padding: 32px;
+      width: 90%; max-width: 700px;
+      position: relative;
+    }
+    .map-modal-close {
+      position: absolute; top: 16px; left: 16px;
+      width: 32px; height: 32px;
+      border-radius: var(--r-full); border: 1.5px solid var(--border);
+      background: white; font-size: 1rem; cursor: pointer;
+      display: flex; align-items: center; justify-content: center;
+    }
+
+    /* Israel SVG map */
+    .israel-map-wrap { position: relative; margin-top: 16px; }
+    .israel-map-wrap svg { width: 100%; height: auto; }
+    .map-region-dot {
+      cursor: pointer;
+      transition: var(--ease);
+    }
+    .map-region-dot:hover circle { r: 10; }
+    .map-region-label { font-family: var(--font); font-size: 13px; fill: var(--n-700); }
+
+    @media (max-width: 900px) {
+      .filter-sidebar { display: none; width: 100%; position: static; }
+      .filter-sidebar.open { display: block; }
+      .filter-mobile-toggle { display: flex; }
+      .marketplace-layout { flex-direction: column; }
     }
   </style>
 </head>
@@ -196,12 +154,12 @@
       <a href="marketplace.html" class="nav-link active">שוק הציוד</a>
       <a href="how-it-works.html" class="nav-link">איך זה עובד</a>
       <a href="list-equipment.html" class="nav-link">הצג ציוד</a>
-      <a href="dashboard.html" class="nav-link">לוח בקרה</a>
+      <a href="owner/dashboard.html" class="nav-link">לוח בקרה</a>
       <a href="sustainability.html" class="nav-link">קיימות</a>
     </div>
     <div class="nav-actions">
-      <a href="#" class="nav-login">כניסה</a>
-      <a href="list-equipment.html" class="btn btn-primary btn-sm">הצג את הציוד שלך</a>
+      <a href="auth.html" class="nav-login">כניסה</a>
+      <a href="auth.html?role=owner" class="btn btn-primary btn-sm">הצג את הציוד שלך</a>
     </div>
   </div>
 </nav>
@@ -210,31 +168,27 @@
 <div class="marketplace-hero">
   <div class="container">
     <h1>שוק הציוד</h1>
-    <p>523 מכונות זמינות ב-31 אזורים בישראל</p>
+    <p id="hero-sub">12 מכונות זמינות ב-7 אזורים בישראל</p>
     <div class="mh-search">
       <div class="hero-search">
         <div class="hs-seg">
           <span class="hs-label">🔍 &nbsp; חפש ציוד</span>
-          <input class="hs-input" type="text" placeholder='טרקטור, קומביין, מרסס, מחפר...'>
+          <input class="hs-input" id="mp-search" type="text" placeholder="טרקטור, קומביין, מרסס...">
         </div>
         <div class="hs-seg">
           <span class="hs-label">📍 &nbsp; אזור</span>
-          <select class="hs-input" style="background:transparent; border:none;">
-            <option>כל ישראל</option>
-            <option>עמק יזרעאל</option>
-            <option>הגליל</option>
-            <option>השפלה</option>
-            <option>הנגב</option>
-            <option>עמק הירדן</option>
-            <option>החוף</option>
-            <option>הערבה</option>
+          <select class="hs-input" id="mp-region-quick" style="background:transparent; border:none;">
+            <option value="">כל ישראל</option>
+            <option value="גליל">גליל</option>
+            <option value="עמק יזרעאל">עמק יזרעאל</option>
+            <option value="שרון">שרון</option>
+            <option value="נגב">נגב</option>
+            <option value="שפלה">שפלה</option>
+            <option value="ירדן">ירדן</option>
+            <option value="גולן">גולן</option>
           </select>
         </div>
-        <div class="hs-seg">
-          <span class="hs-label">📅 &nbsp; תאריכים</span>
-          <input class="hs-input" type="text" placeholder="מ: ___  עד: ___">
-        </div>
-        <button class="hs-btn">חפש ←</button>
+        <button class="hs-btn" id="hero-search-btn">חפש ←</button>
       </div>
     </div>
   </div>
@@ -243,6 +197,14 @@
 <!-- Marketplace Body -->
 <div class="marketplace-body">
   <div class="container">
+
+    <!-- Mobile filter toggle -->
+    <div style="margin-bottom:16px; display:flex; gap:10px; align-items:center;">
+      <button class="filter-mobile-toggle" id="filter-toggle-btn">
+        ⚙️ פילטרים
+      </button>
+    </div>
+
     <div class="marketplace-layout">
 
       <!-- Filter Sidebar -->
@@ -250,383 +212,110 @@
 
         <div class="filter-card">
           <div class="filter-title">סוג ציוד</div>
-          <label class="filter-option"><input type="checkbox" checked> טרקטורים <span class="filter-count">87</span></label>
-          <label class="filter-option"><input type="checkbox"> קוצרים וקומביינים <span class="filter-count">34</span></label>
-          <label class="filter-option"><input type="checkbox" checked> ציוד ריסוס <span class="filter-count">52</span></label>
-          <label class="filter-option"><input type="checkbox"> ציוד הכנת קרקע <span class="filter-count">61</span></label>
-          <label class="filter-option"><input type="checkbox"> מחפרים <span class="filter-count">43</span></label>
-          <label class="filter-option"><input type="checkbox"> מלגזות <span class="filter-count">78</span></label>
-          <label class="filter-option"><input type="checkbox"> גנרטורים <span class="filter-count">29</span></label>
-          <label class="filter-option"><input type="checkbox"> ציוד השקיה <span class="filter-count">55</span></label>
-          <label class="filter-option"><input type="checkbox"> ציוד קטיף <span class="filter-count">44</span></label>
-          <label class="filter-option"><input type="checkbox"> אחר <span class="filter-count">40</span></label>
+          <div id="filter-types">
+            <label class="filter-option"><input type="checkbox" value="טרקטור"> טרקטורים <span class="filter-count">2</span></label>
+            <label class="filter-option"><input type="checkbox" value="קומביין"> קוצרים וקומביינים <span class="filter-count">2</span></label>
+            <label class="filter-option"><input type="checkbox" value="ריסוס"> ציוד ריסוס <span class="filter-count">1</span></label>
+            <label class="filter-option"><input type="checkbox" value="קלאב קאר"> מחפרים ומלגזות <span class="filter-count">4</span></label>
+            <label class="filter-option"><input type="checkbox" value="זורע"> ציוד השקיה וזריעה <span class="filter-count">1</span></label>
+            <label class="filter-option"><input type="checkbox" value="באלר"> דחפורים <span class="filter-count">1</span></label>
+          </div>
         </div>
 
         <div class="filter-card">
           <div class="filter-title">אזור בישראל</div>
-          <label class="filter-option"><input type="checkbox" checked> עמק יזרעאל <span class="filter-count">89</span></label>
-          <label class="filter-option"><input type="checkbox"> הגליל <span class="filter-count">72</span></label>
-          <label class="filter-option"><input type="checkbox"> השפלה <span class="filter-count">64</span></label>
-          <label class="filter-option"><input type="checkbox"> הנגב <span class="filter-count">58</span></label>
-          <label class="filter-option"><input type="checkbox"> עמק הירדן <span class="filter-count">41</span></label>
-          <label class="filter-option"><input type="checkbox"> החוף התיכון <span class="filter-count">53</span></label>
-          <label class="filter-option"><input type="checkbox"> הערבה <span class="filter-count">37</span></label>
-          <label class="filter-option"><input type="checkbox"> יהודה ושומרון <span class="filter-count">29</span></label>
+          <div id="filter-regions">
+            <label class="filter-option"><input type="checkbox" value="עמק יזרעאל"> עמק יזרעאל <span class="filter-count">1</span></label>
+            <label class="filter-option"><input type="checkbox" value="גליל"> הגליל <span class="filter-count">2</span></label>
+            <label class="filter-option"><input type="checkbox" value="שפלה"> השפלה <span class="filter-count">1</span></label>
+            <label class="filter-option"><input type="checkbox" value="נגב"> הנגב <span class="filter-count">3</span></label>
+            <label class="filter-option"><input type="checkbox" value="ירדן"> עמק הירדן <span class="filter-count">2</span></label>
+            <label class="filter-option"><input type="checkbox" value="שרון"> השרון <span class="filter-count">2</span></label>
+            <label class="filter-option"><input type="checkbox" value="גולן"> רמת הגולן <span class="filter-count">0</span></label>
+          </div>
         </div>
 
         <div class="filter-card">
           <div class="filter-title">מחיר לשכירה ליום</div>
           <div style="display:flex; justify-content:space-between; font-size:0.875rem; color:var(--n-600);">
             <span>₪200</span>
-            <span id="price-display" style="font-weight:700; color:var(--n-900);">₪5,000</span>
+            <span id="price-display" style="font-weight:700; color:var(--n-900);">₪8,000</span>
           </div>
-          <input class="range-slider" type="range" min="200" max="8000" value="5000" data-display="price-display">
+          <input class="range-slider" id="price-slider" type="range" min="200" max="8000" value="8000">
         </div>
 
-        <div class="filter-card">
-          <div class="filter-title">סוג בעלים</div>
-          <label class="filter-option"><input type="checkbox" checked> קיבוצים ומושבים <span class="filter-count">198</span></label>
-          <label class="filter-option"><input type="checkbox" checked> בעלי פרטי <span class="filter-count">145</span></label>
-          <label class="filter-option"><input type="checkbox"> חברות <span class="filter-count">180</span></label>
-        </div>
-
-        <div class="filter-card">
-          <div class="filter-title">מצב ציוד</div>
-          <label class="filter-option"><input type="checkbox" checked> כמו חדש <span class="filter-count">94</span></label>
-          <label class="filter-option"><input type="checkbox" checked> מצוין <span class="filter-count">187</span></label>
-          <label class="filter-option"><input type="checkbox" checked> טוב מאוד <span class="filter-count">142</span></label>
-          <label class="filter-option"><input type="checkbox"> טוב <span class="filter-count">100</span></label>
-        </div>
-
-        <div class="filter-card">
-          <div class="filter-title">תכונות</div>
-          <label class="filter-option"><input type="checkbox"> ✓ ביטוח מוטמע</label>
-          <label class="filter-option"><input type="checkbox" checked> משלוח לשדה</label>
-          <label class="filter-option"><input type="checkbox"> הדרכת שימוש</label>
-          <label class="filter-option"><input type="checkbox"> ציוד נלווה כלול</label>
-          <label class="filter-option"><input type="checkbox"> זמין מיידית</label>
-        </div>
-
-        <div class="filter-card">
-          <div class="filter-title">זמינות</div>
-          <div class="availability-legend">
-            <div class="d-flex ai-center gap-2"><div class="legend-dot" style="background:var(--success)"></div> זמין עכשיו</div>
-            <div class="d-flex ai-center gap-2"><div class="legend-dot" style="background:var(--warning)"></div> עסוק חלקית</div>
-            <div class="d-flex ai-center gap-2"><div class="legend-dot" style="background:var(--n-300)"></div> לא זמין</div>
-          </div>
-          <label class="filter-option" style="margin-top:8px;"><input type="checkbox" checked> זמין ב-7 ימים הקרובים</label>
-          <label class="filter-option"><input type="checkbox"> זמין בחודש הקרוב</label>
-        </div>
-
-        <button class="btn btn-primary btn-full mt-4">החל פילטרים</button>
-        <button class="btn btn-ghost btn-full mt-2" style="font-size:0.875rem; color:var(--n-500);">נקה הכל</button>
+        <button class="btn btn-primary btn-full mt-4" onclick="applyFilters()">החל פילטרים</button>
+        <button class="btn btn-ghost btn-full mt-2" id="clear-filters" style="font-size:0.875rem; color:var(--n-500);">נקה הכל</button>
       </aside>
 
       <!-- Results -->
       <div class="results-area">
-        <div class="filter-tag-strip">
-          <span class="filter-tag">טרקטורים <span class="remove">✕</span></span>
-          <span class="filter-tag">ריסוס <span class="remove">✕</span></span>
-          <span class="filter-tag">עמק יזרעאל <span class="remove">✕</span></span>
-          <span class="filter-tag">עד ₪5,000/יום <span class="remove">✕</span></span>
-        </div>
-
         <div class="results-header">
-          <div class="results-count">מציג <strong>226</strong> תוצאות מתוך 523</div>
+          <div class="results-count" id="results-count">טוען...</div>
           <div class="d-flex gap-3 ai-center">
-            <button class="map-toggle">🗺️ תצוגת מפה</button>
-            <select class="sort-select">
-              <option>מומלץ</option>
-              <option>מחיר: נמוך לגבוה</option>
-              <option>מחיר: גבוה לנמוך</option>
-              <option>דירוג הגבוה ביותר</option>
-              <option>חדש ביותר</option>
-              <option>הכי קרוב אליי</option>
+            <button class="map-toggle" id="map-toggle-btn">🗺️ פתח מפה</button>
+            <select class="sort-select" id="sort-select">
+              <option value="recommended">מומלץ</option>
+              <option value="price-asc">מחיר: נמוך לגבוה</option>
+              <option value="price-desc">מחיר: גבוה לנמוך</option>
+              <option value="rating">דירוג הגבוה ביותר</option>
+              <option value="newest">חדש ביותר</option>
             </select>
           </div>
         </div>
 
-        <div class="eq-grid">
-
-          <!-- 1 John Deere 6110M -->
-          <a href="listing.html" class="equipment-card">
-            <div class="ec-image" style="background:linear-gradient(135deg,#2D6A4F,#40916C)">
-              <img src="https://images.unsplash.com/photo-1601584115197-04ecc0da31d7?auto=format&fit=crop&w=600&h=420&q=75" alt="טרקטור ג'ון דיר">
-              <div class="ec-badges">
-                <span class="badge badge-verified">✓ מאומת</span>
-                <span class="badge badge-success">זמין</span>
-              </div>
-              <button class="ec-heart">♡</button>
-            </div>
-            <div class="ec-body">
-              <div class="ec-category">טרקטורים</div>
-              <div class="ec-title">ג'ון דיר 6110M — 110 כ"ס</div>
-              <div class="ec-meta"><span>📍 עמק יזרעאל, מ. שדה אליהו</span> <span>🏘️ קיבוץ</span></div>
-              <div class="ec-specs"><span class="spec-tag">2019</span><span class="spec-tag">110 כ"ס</span><span class="spec-tag">מצוין</span><span class="spec-tag">4WD</span></div>
-              <div class="ec-price-row">
-                <div><div class="price-day">₪850 <span>/ יום</span></div><div class="price-week">₪4,800 / שבוע</div></div>
-                <div class="rating"><span class="stars">★★★★★</span><span class="rating-score">4.9</span><span class="rating-count">(38)</span></div>
-              </div>
-            </div>
-          </a>
-
-          <!-- 2 Claas Lexion -->
-          <a href="listing.html" class="equipment-card">
-            <div class="ec-image" style="background:linear-gradient(135deg,#1B4332,#2D6A4F)">
-              <img src="https://images.unsplash.com/photo-1574323347407-f5e1ad6d020b?auto=format&fit=crop&w=600&h=420&q=75" alt="קומביין קלאס">
-              <div class="ec-badges">
-                <span class="badge badge-verified">✓ מאומת</span>
-                <span class="badge badge-warning">עסוק עד 20.7</span>
-              </div>
-              <button class="ec-heart">♡</button>
-            </div>
-            <div class="ec-body">
-              <div class="ec-category">קוצרים</div>
-              <div class="ec-title">קלאס לקסיון 560 — קומביין</div>
-              <div class="ec-meta"><span>📍 גליל עליון, קיבוץ חגושה</span> <span>🏘️ קיבוץ</span></div>
-              <div class="ec-specs"><span class="spec-tag">2020</span><span class="spec-tag">390 כ"ס</span><span class="spec-tag">כמו חדש</span></div>
-              <div class="ec-price-row">
-                <div><div class="price-day">₪3,800 <span>/ יום</span></div><div class="price-week">₪22,000 / שבוע</div></div>
-                <div class="rating"><span class="stars">★★★★★</span><span class="rating-score">4.8</span><span class="rating-count">(22)</span></div>
-              </div>
-            </div>
-          </a>
-
-          <!-- 3 Hardi Sprayer -->
-          <a href="listing.html" class="equipment-card">
-            <div class="ec-image" style="background:linear-gradient(135deg,#6B8F5E,#7A9E7E)">
-              <img src="https://images.unsplash.com/photo-1416879595882-3373a0480b5b?auto=format&fit=crop&w=600&h=420&q=75" alt="מרסס הרדי">
-              <div class="ec-badges">
-                <span class="badge badge-verified">✓ מאומת</span>
-                <span class="badge badge-success">זמין</span>
-              </div>
-              <button class="ec-heart">♡</button>
-            </div>
-            <div class="ec-body">
-              <div class="ec-category">ריסוס</div>
-              <div class="ec-title">הרדי קומנדר 3200 — מרסס שדה</div>
-              <div class="ec-meta"><span>📍 שפלת יהודה, כ. ויתקין</span> <span>👤 פרטי</span></div>
-              <div class="ec-specs"><span class="spec-tag">3,200 ל'</span><span class="spec-tag">24 מ' טווח</span><span class="spec-tag">טוב</span></div>
-              <div class="ec-price-row">
-                <div><div class="price-day">₪720 <span>/ יום</span></div><div class="price-week">₪4,100 / שבוע</div></div>
-                <div class="rating"><span class="stars">★★★★½</span><span class="rating-score">4.7</span><span class="rating-count">(15)</span></div>
-              </div>
-            </div>
-          </a>
-
-          <!-- 4 Kuhn Disc -->
-          <a href="listing.html" class="equipment-card">
-            <div class="ec-image" style="background:linear-gradient(135deg,#8A9A5B,#A8B870)">
-              <img src="https://images.unsplash.com/photo-1625246333195-78d9c38ad449?auto=format&fit=crop&w=600&h=420&q=75" alt="קון דיסק">
-              <div class="ec-badges">
-                <span class="badge badge-verified">✓ מאומת</span>
-                <span class="badge badge-success">זמין</span>
-              </div>
-              <button class="ec-heart">♡</button>
-            </div>
-            <div class="ec-body">
-              <div class="ec-category">הכנת קרקע</div>
-              <div class="ec-title">קון דיסקוור XM — פלח דיסקים</div>
-              <div class="ec-meta"><span>📍 נגב צפוני, רהט</span> <span>🏢 חברה</span></div>
-              <div class="ec-specs"><span class="spec-tag">7.5 מ' רוחב</span><span class="spec-tag">2021</span><span class="spec-tag">מצוין</span></div>
-              <div class="ec-price-row">
-                <div><div class="price-day">₪680 <span>/ יום</span></div><div class="price-week">₪3,900 / שבוע</div></div>
-                <div class="rating"><span class="stars">★★★★½</span><span class="rating-score">4.6</span><span class="rating-count">(9)</span></div>
-              </div>
-            </div>
-          </a>
-
-          <!-- 5 Hyster Forklift -->
-          <a href="listing.html" class="equipment-card">
-            <div class="ec-image" style="background:linear-gradient(135deg,#334155,#475569)">
-              <img src="https://images.unsplash.com/photo-1558618666-fcd25c85cd64?auto=format&fit=crop&w=600&h=420&q=75" alt="מלגזה היסטר">
-              <div class="ec-badges">
-                <span class="badge badge-verified">✓ מאומת</span>
-                <span class="badge badge-success">זמין</span>
-              </div>
-              <button class="ec-heart">♡</button>
-            </div>
-            <div class="ec-body">
-              <div class="ec-category">מלגזות</div>
-              <div class="ec-title">היסטר H80XM — 8 טון</div>
-              <div class="ec-meta"><span>📍 אשדוד, אזור תעשייה</span> <span>🏢 חברה</span></div>
-              <div class="ec-specs"><span class="spec-tag">8 טון</span><span class="spec-tag">2018</span><span class="spec-tag">טוב מאוד</span></div>
-              <div class="ec-price-row">
-                <div><div class="price-day">₪490 <span>/ יום</span></div><div class="price-week">₪2,800 / שבוע</div></div>
-                <div class="rating"><span class="stars">★★★★½</span><span class="rating-score">4.5</span><span class="rating-count">(31)</span></div>
-              </div>
-            </div>
-          </a>
-
-          <!-- 6 Case Excavator -->
-          <a href="listing.html" class="equipment-card">
-            <div class="ec-image" style="background:linear-gradient(135deg,#92400E,#B45309)">
-              <img src="https://images.unsplash.com/photo-1590689098671-86a1bcded7c4?auto=format&fit=crop&w=600&h=420&q=75" alt="מחפר קייס">
-              <div class="ec-badges">
-                <span class="badge badge-verified">✓ מאומת</span>
-                <span class="badge badge-success">זמין</span>
-              </div>
-              <button class="ec-heart">♡</button>
-            </div>
-            <div class="ec-body">
-              <div class="ec-category">מחפרים</div>
-              <div class="ec-title">קייס CX130D — 130 כ"ס</div>
-              <div class="ec-meta"><span>📍 נגב, באר שבע</span> <span>🏢 חברה</span></div>
-              <div class="ec-specs"><span class="spec-tag">130 כ"ס</span><span class="spec-tag">2020</span><span class="spec-tag">מצוין</span></div>
-              <div class="ec-price-row">
-                <div><div class="price-day">₪1,950 <span>/ יום</span></div><div class="price-week">₪10,500 / שבוע</div></div>
-                <div class="rating"><span class="stars">★★★★★</span><span class="rating-score">4.8</span><span class="rating-count">(18)</span></div>
-              </div>
-            </div>
-          </a>
-
-          <!-- 7 Date Harvester -->
-          <a href="listing.html" class="equipment-card">
-            <div class="ec-image" style="background:linear-gradient(135deg,#78350F,#92400E)">
-              <img src="https://images.unsplash.com/photo-1472214103451-9374bd1c798e?auto=format&fit=crop&w=600&h=420&q=75" alt="מכונת קטיף תמרים">
-              <div class="ec-badges">
-                <span class="badge badge-verified">✓ מאומת</span>
-                <span class="badge badge-success">זמין</span>
-              </div>
-              <button class="ec-heart">♡</button>
-            </div>
-            <div class="ec-body">
-              <div class="ec-category">ציוד קטיף</div>
-              <div class="ec-title">מכונת קטיף תמרים — 800 ק"ג</div>
-              <div class="ec-meta"><span>📍 ערבה תיכונה, ק. עין גדי</span> <span>🏘️ קיבוץ</span></div>
-              <div class="ec-specs"><span class="spec-tag">800 ק"ג/אריה</span><span class="spec-tag">2022</span><span class="spec-tag">כמו חדש</span></div>
-              <div class="ec-price-row">
-                <div><div class="price-day">₪1,100 <span>/ יום</span></div><div class="price-week">₪6,200 / שבוע</div></div>
-                <div class="rating"><span class="stars">★★★★★</span><span class="rating-score">4.9</span><span class="rating-count">(7)</span></div>
-              </div>
-            </div>
-          </a>
-
-          <!-- 8 Caterpillar Generator -->
-          <a href="listing.html" class="equipment-card">
-            <div class="ec-image" style="background:linear-gradient(135deg,#1E3A5F,#2563EB)">
-              <img src="https://images.unsplash.com/photo-1621905251918-48416bd8575a?auto=format&fit=crop&w=600&h=420&q=75" alt="גנרטור קטרפילר">
-              <div class="ec-badges">
-                <span class="badge badge-verified">✓ מאומת</span>
-                <span class="badge badge-success">זמין</span>
-              </div>
-              <button class="ec-heart">♡</button>
-            </div>
-            <div class="ec-body">
-              <div class="ec-category">גנרטורים</div>
-              <div class="ec-title">קטרפילר C18 ACERT — 550 kVA</div>
-              <div class="ec-meta"><span>📍 חיפה, קריית ביאליק</span> <span>🏢 חברה</span></div>
-              <div class="ec-specs"><span class="spec-tag">550 kVA</span><span class="spec-tag">2019</span><span class="spec-tag">מצוין</span></div>
-              <div class="ec-price-row">
-                <div><div class="price-day">₪1,200 <span>/ יום</span></div><div class="price-week">₪6,800 / שבוע</div></div>
-                <div class="rating"><span class="stars">★★★★½</span><span class="rating-score">4.7</span><span class="rating-count">(25)</span></div>
-              </div>
-            </div>
-          </a>
-
-          <!-- 9 New Holland Olive -->
-          <a href="listing.html" class="equipment-card">
-            <div class="ec-image" style="background:linear-gradient(135deg,#4A7C59,#6B8F5E)">
-              <img src="https://images.unsplash.com/photo-1543257580-7269da773bf5?auto=format&fit=crop&w=600&h=420&q=75" alt="מכונת קטיף זיתים">
-              <div class="ec-badges">
-                <span class="badge badge-verified">✓ מאומת</span>
-                <span class="badge badge-primary">בלעדי</span>
-              </div>
-              <button class="ec-heart">♡</button>
-            </div>
-            <div class="ec-body">
-              <div class="ec-category">ציוד קטיף</div>
-              <div class="ec-title">ניו הולנד Braud — קוצר זיתים</div>
-              <div class="ec-meta"><span>📍 גלי גליל, יגור</span> <span>🏘️ קיבוץ</span></div>
-              <div class="ec-specs"><span class="spec-tag">4.5 מ' רוחב</span><span class="spec-tag">2021</span><span class="spec-tag">כמו חדש</span></div>
-              <div class="ec-price-row">
-                <div><div class="price-day">₪2,300 <span>/ יום</span></div><div class="price-week">₪13,500 / שבוע</div></div>
-                <div class="rating"><span class="stars">★★★★★</span><span class="rating-score">5.0</span><span class="rating-count">(4)</span></div>
-              </div>
-            </div>
-          </a>
-
-          <!-- 10 Netafim Irrigation -->
-          <a href="listing.html" class="equipment-card">
-            <div class="ec-image" style="background:linear-gradient(135deg,#0369A1,#0EA5E9)">
-              <img src="https://images.unsplash.com/photo-1625246333195-78d9c38ad449?auto=format&fit=crop&w=600&h=420&q=75" alt="ציוד השקיה נטפים">
-              <div class="ec-badges">
-                <span class="badge badge-verified">✓ מאומת</span>
-                <span class="badge badge-success">זמין</span>
-              </div>
-              <button class="ec-heart">♡</button>
-            </div>
-            <div class="ec-body">
-              <div class="ec-category">השקיה</div>
-              <div class="ec-title">נטפים — מערכת טפטפות 50 דונם</div>
-              <div class="ec-meta"><span>📍 ערבה דרומית, ספיר</span> <span>👤 פרטי</span></div>
-              <div class="ec-specs"><span class="spec-tag">50 דונם</span><span class="spec-tag">2022</span><span class="spec-tag">כמו חדש</span></div>
-              <div class="ec-price-row">
-                <div><div class="price-day">₪380 <span>/ יום</span></div><div class="price-week">₪2,200 / שבוע</div></div>
-                <div class="rating"><span class="stars">★★★★½</span><span class="rating-score">4.6</span><span class="rating-count">(11)</span></div>
-              </div>
-            </div>
-          </a>
-
-          <!-- 11 New Holland T7 Tractor -->
-          <a href="listing.html" class="equipment-card">
-            <div class="ec-image" style="background:linear-gradient(135deg,#1B4332,#40916C)">
-              <img src="https://images.unsplash.com/photo-1601584115197-04ecc0da31d7?auto=format&fit=crop&w=600&h=420&q=75" alt="ניו הולנד T7">
-              <div class="ec-badges">
-                <span class="badge badge-verified">✓ מאומת</span>
-                <span class="badge badge-success">זמין</span>
-              </div>
-              <button class="ec-heart">♡</button>
-            </div>
-            <div class="ec-body">
-              <div class="ec-category">טרקטורים</div>
-              <div class="ec-title">ניו הולנד T7.270 — 270 כ"ס</div>
-              <div class="ec-meta"><span>📍 עמק הירדן, בקעת הירדן</span> <span>👤 פרטי</span></div>
-              <div class="ec-specs"><span class="spec-tag">2021</span><span class="spec-tag">270 כ"ס</span><span class="spec-tag">כמו חדש</span></div>
-              <div class="ec-price-row">
-                <div><div class="price-day">₪1,100 <span>/ יום</span></div><div class="price-week">₪6,200 / שבוע</div></div>
-                <div class="rating"><span class="stars">★★★★★</span><span class="rating-score">4.8</span><span class="rating-count">(12)</span></div>
-              </div>
-            </div>
-          </a>
-
-          <!-- 12 Komatsu Bulldozer -->
-          <a href="listing.html" class="equipment-card">
-            <div class="ec-image" style="background:linear-gradient(135deg,#1C1917,#44403C)">
-              <img src="https://images.unsplash.com/photo-1504307651254-35680f356dfd?auto=format&fit=crop&w=600&h=420&q=75" alt="דחפור קומצו">
-              <div class="ec-badges">
-                <span class="badge badge-verified">✓ מאומת</span>
-                <span class="badge badge-warning">עסוק עד 5.8</span>
-              </div>
-              <button class="ec-heart">♡</button>
-            </div>
-            <div class="ec-body">
-              <div class="ec-category">דחפורים</div>
-              <div class="ec-title">קומצו D65EX-18 — 200 כ"ס</div>
-              <div class="ec-meta"><span>📍 נגב דרומי, ערד</span> <span>🏢 חברה</span></div>
-              <div class="ec-specs"><span class="spec-tag">200 כ"ס</span><span class="spec-tag">2020</span><span class="spec-tag">מצוין</span></div>
-              <div class="ec-price-row">
-                <div><div class="price-day">₪2,800 <span>/ יום</span></div><div class="price-week">₪15,500 / שבוע</div></div>
-                <div class="rating"><span class="stars">★★★★½</span><span class="rating-score">4.7</span><span class="rating-count">(8)</span></div>
-              </div>
-            </div>
-          </a>
-
+        <div class="eq-grid" id="eq-grid">
+          <!-- Populated by JS -->
         </div>
-
-        <!-- Pagination -->
-        <div class="pagination">
-          <button class="page-btn active">1</button>
-          <button class="page-btn">2</button>
-          <button class="page-btn">3</button>
-          <button class="page-btn">4</button>
-          <span style="color:var(--n-400); padding:0 4px;">...</span>
-          <button class="page-btn">19</button>
-          <button class="page-btn">→</button>
-        </div>
-
       </div>
     </div>
+  </div>
+</div>
+
+<!-- Map Modal -->
+<div class="map-modal" id="map-modal">
+  <div class="map-modal-box">
+    <button class="map-modal-close" id="map-modal-close">✕</button>
+    <h3 style="margin-bottom:4px;">מפת ציוד זמין בישראל</h3>
+    <p style="font-size:0.875rem; color:var(--n-500); margin-bottom:16px;">לחץ על אזור לסינון התוצאות</p>
+    <div class="israel-map-wrap">
+      <svg viewBox="0 0 320 580" xmlns="http://www.w3.org/2000/svg">
+        <!-- Simple Israel outline -->
+        <path d="M130,30 L180,25 L220,50 L240,80 L250,120 L245,160 L255,200 L260,240 L250,280 L240,310 L230,340 L220,370 L200,400 L185,430 L175,460 L165,490 L160,520 L155,490 L145,460 L135,430 L120,400 L100,370 L90,340 L80,310 L70,280 L65,240 L70,200 L75,160 L70,120 L80,80 L100,50 Z"
+          fill="#F0FFF4" stroke="#B7E4C7" stroke-width="2"/>
+        <!-- Region dots -->
+        <g class="map-region-dot" onclick="filterByRegion('גליל')">
+          <circle cx="160" cy="90" r="8" fill="#52B788" opacity="0.85"/>
+          <text x="175" y="95" class="map-region-label">גליל (2)</text>
+        </g>
+        <g class="map-region-dot" onclick="filterByRegion('עמק יזרעאל')">
+          <circle cx="155" cy="140" r="7" fill="#52B788" opacity="0.85"/>
+          <text x="170" y="145" class="map-region-label">עמק יזרעאל (1)</text>
+        </g>
+        <g class="map-region-dot" onclick="filterByRegion('שרון')">
+          <circle cx="110" cy="190" r="7" fill="#52B788" opacity="0.85"/>
+          <text x="125" y="195" class="map-region-label">שרון (2)</text>
+        </g>
+        <g class="map-region-dot" onclick="filterByRegion('ירדן')">
+          <circle cx="195" cy="180" r="7" fill="#52B788" opacity="0.85"/>
+          <text x="210" y="185" class="map-region-label">ירדן (2)</text>
+        </g>
+        <g class="map-region-dot" onclick="filterByRegion('שפלה')">
+          <circle cx="100" cy="240" r="7" fill="#52B788" opacity="0.85"/>
+          <text x="115" y="245" class="map-region-label">שפלה (1)</text>
+        </g>
+        <g class="map-region-dot" onclick="filterByRegion('נגב')">
+          <circle cx="145" cy="360" r="9" fill="#52B788" opacity="0.85"/>
+          <text x="160" y="365" class="map-region-label">נגב (3)</text>
+        </g>
+        <g class="map-region-dot" onclick="filterByRegion('גולן')">
+          <circle cx="210" cy="110" r="5" fill="#B7E4C7" opacity="0.85"/>
+          <text x="220" y="115" class="map-region-label" fill="#94A3B8">גולן (0)</text>
+        </g>
+      </svg>
+    </div>
+    <p style="font-size:0.8rem; color:var(--n-400); text-align:center; margin-top:8px;">לחץ על נקודה לסינון לפי אזור</p>
+    <button class="btn btn-ghost btn-full mt-4" onclick="hideMapModal(); clearRegionFilter()">הצג את כל האזורים</button>
   </div>
 </div>
 
@@ -641,14 +330,52 @@
         </a>
         <p class="footer-brand-tagline">פלטפורמת שיתוף הציוד החקלאי והתעשייתי בישראל.</p>
       </div>
-      <div><div class="footer-col-title">הפלטפורמה</div><div class="footer-links"><a href="marketplace.html" class="footer-link">שוק הציוד</a><a href="list-equipment.html" class="footer-link">פרסם ציוד</a><a href="dashboard.html" class="footer-link">לוח בקרה</a><a href="how-it-works.html" class="footer-link">איך זה עובד</a></div></div>
-      <div><div class="footer-col-title">קטגוריות</div><div class="footer-links"><a href="#" class="footer-link">טרקטורים</a><a href="#" class="footer-link">קוצרים</a><a href="#" class="footer-link">ריסוס</a><a href="#" class="footer-link">מחפרים</a></div></div>
-      <div><div class="footer-col-title">תמיכה</div><div class="footer-links"><a href="#" class="footer-link">צור קשר</a><a href="#" class="footer-link">שאלות נפוצות</a><a href="#" class="footer-link">ביטוח</a></div></div>
+      <div><div class="footer-col-title">הפלטפורמה</div><div class="footer-links"><a href="marketplace.html" class="footer-link">שוק הציוד</a><a href="list-equipment.html" class="footer-link">פרסם ציוד</a><a href="owner/dashboard.html" class="footer-link">לוח בקרה</a><a href="how-it-works.html" class="footer-link">איך זה עובד</a></div></div>
+      <div><div class="footer-col-title">קטגוריות</div><div class="footer-links"><a href="marketplace.html" class="footer-link">טרקטורים</a><a href="marketplace.html" class="footer-link">קוצרים</a><a href="marketplace.html" class="footer-link">ריסוס</a><a href="marketplace.html" class="footer-link">מחפרים</a></div></div>
+      <div><div class="footer-col-title">תמיכה</div><div class="footer-links"><a href="how-it-works.html" class="footer-link">צור קשר</a><a href="how-it-works.html" class="footer-link">שאלות נפוצות</a><a href="sustainability.html" class="footer-link">ביטוח</a></div></div>
     </div>
     <div class="footer-bottom"><span>© 2025 ASSET-LINK בע"מ</span></div>
   </div>
 </footer>
 
 <script src="js/main.js"></script>
+<script src="js/auth.js"></script>
+<script src="js/marketplace.js"></script>
+<script>
+// Quick region filter from hero dropdown
+document.getElementById('mp-region-quick').addEventListener('change', function() {
+  const val = this.value;
+  document.querySelectorAll('#filter-regions input').forEach(cb => {
+    cb.checked = val && cb.value === val;
+  });
+  applyFilters();
+});
+
+// Hero search button
+document.getElementById('hero-search-btn').addEventListener('click', function(e) {
+  e.preventDefault();
+  applyFilters();
+  document.querySelector('.marketplace-body').scrollIntoView({ behavior: 'smooth' });
+});
+
+// Mobile filter toggle
+document.getElementById('filter-toggle-btn').addEventListener('click', function() {
+  document.getElementById('filter-sidebar').classList.toggle('open');
+});
+
+// Map: filter by region
+function filterByRegion(region) {
+  document.querySelectorAll('#filter-regions input').forEach(cb => {
+    cb.checked = cb.value === region;
+  });
+  applyFilters();
+  hideMapModal();
+}
+
+function clearRegionFilter() {
+  document.querySelectorAll('#filter-regions input').forEach(cb => cb.checked = false);
+  applyFilters();
+}
+</script>
 </body>
 </html>

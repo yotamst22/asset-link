@@ -1,0 +1,291 @@
+<!DOCTYPE html>
+<html lang="he" dir="rtl">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>AI יועץ — ASSET-LINK</title>
+  <link rel="stylesheet" href="../css/styles.css">
+  <style>
+    body { background: var(--bg); }
+    .owner-layout { display: flex; min-height: 100vh; padding-top: var(--nav-h); }
+
+    /* Sidebar (shared) */
+    .owner-sidebar {
+      width: 240px; flex-shrink: 0; background: white;
+      border-inline-start: 1px solid var(--border-light);
+      padding: 24px 0; position: sticky;
+      top: var(--nav-h); height: calc(100vh - var(--nav-h)); overflow-y: auto;
+    }
+    .sidebar-user { padding: 0 16px 20px; border-bottom: 1px solid var(--border-light); margin-bottom: 12px; }
+    .sidebar-user-avatar { width: 44px; height: 44px; border-radius: var(--r-full); background: var(--primary-100); display: flex; align-items: center; justify-content: center; font-size: 1.25rem; margin-bottom: 10px; }
+    .sidebar-user-name { font-weight: 700; font-size: 0.9375rem; color: var(--n-900); }
+    .sidebar-user-role { font-size: 0.8rem; color: var(--n-400); margin-top: 2px; }
+    .sidebar-nav-item { display: flex; align-items: center; gap: 10px; padding: 10px 20px; font-size: 0.9rem; font-weight: 500; color: var(--n-600); cursor: pointer; transition: var(--ease); text-decoration: none; }
+    .sidebar-nav-item:hover { color: var(--primary); background: var(--primary-50); }
+    .sidebar-nav-item.active { color: var(--primary); background: var(--primary-50); font-weight: 700; border-inline-end: 3px solid var(--primary); }
+    .sidebar-nav-icon { font-size: 1.1rem; width: 20px; text-align: center; flex-shrink: 0; }
+    .sidebar-section-label { font-size: 0.7rem; font-weight: 700; color: var(--n-400); text-transform: uppercase; letter-spacing: 0.08em; padding: 14px 20px 6px; }
+
+    /* Chat layout */
+    .chat-main {
+      flex: 1; display: flex; flex-direction: column;
+      height: calc(100vh - var(--nav-h));
+      min-width: 0;
+    }
+
+    .chat-header {
+      padding: 20px 28px;
+      background: white;
+      border-bottom: 1px solid var(--border-light);
+      display: flex; align-items: center; gap: 14px;
+      flex-shrink: 0;
+    }
+
+    .chat-header-avatar {
+      width: 44px; height: 44px;
+      background: linear-gradient(135deg, var(--primary), var(--primary-400));
+      border-radius: var(--r-full);
+      display: flex; align-items: center; justify-content: center;
+      font-size: 1.375rem;
+    }
+
+    .chat-header-name { font-weight: 700; font-size: 1rem; color: var(--n-900); }
+    .chat-header-status { font-size: 0.8rem; color: var(--success); display: flex; align-items: center; gap: 5px; }
+    .status-dot { width: 7px; height: 7px; border-radius: 50%; background: var(--success); }
+
+    /* Messages area */
+    .chat-messages {
+      flex: 1; overflow-y: auto; padding: 24px 28px;
+      display: flex; flex-direction: column; gap: 16px;
+      background: var(--bg);
+    }
+
+    .chat-msg { display: flex; align-items: flex-end; gap: 10px; }
+    .chat-msg-user { flex-direction: row-reverse; }
+
+    .chat-avatar {
+      width: 34px; height: 34px; border-radius: var(--r-full);
+      background: var(--primary-100); display: flex; align-items: center;
+      justify-content: center; font-size: 1rem; flex-shrink: 0;
+    }
+    .chat-avatar-user { background: var(--earth-100); }
+
+    .chat-bubble {
+      max-width: 68%; min-width: 60px;
+    }
+
+    .chat-text {
+      padding: 12px 16px;
+      border-radius: var(--r-lg);
+      font-size: 0.9375rem;
+      line-height: 1.65;
+      color: var(--n-800);
+    }
+
+    .chat-msg-ai .chat-text {
+      background: white;
+      border: 1px solid var(--border-light);
+      border-radius: 4px var(--r-lg) var(--r-lg) var(--r-lg);
+      box-shadow: var(--sh-xs);
+    }
+
+    .chat-msg-user .chat-text {
+      background: var(--primary);
+      color: white;
+      border-radius: var(--r-lg) 4px var(--r-lg) var(--r-lg);
+    }
+
+    .chat-time {
+      font-size: 0.7rem; color: var(--n-400);
+      margin-top: 4px; padding: 0 4px;
+    }
+    .chat-msg-user .chat-time { text-align: left; }
+
+    /* Typing indicator */
+    .typing-dots { display: flex; gap: 4px; padding: 4px 0; }
+    .typing-dots span {
+      width: 8px; height: 8px; border-radius: 50%;
+      background: var(--n-300);
+      animation: typing-bounce 1.2s infinite;
+    }
+    .typing-dots span:nth-child(2) { animation-delay: 0.2s; }
+    .typing-dots span:nth-child(3) { animation-delay: 0.4s; }
+
+    @keyframes typing-bounce {
+      0%, 80%, 100% { transform: translateY(0); background: var(--n-300); }
+      40% { transform: translateY(-6px); background: var(--primary-400); }
+    }
+
+    /* Quick chips */
+    .chat-chips {
+      padding: 12px 28px 0;
+      display: flex; gap: 8px; flex-wrap: wrap;
+      background: var(--bg);
+      flex-shrink: 0;
+    }
+
+    .quick-chip {
+      padding: 7px 14px;
+      background: white; border: 1.5px solid var(--border);
+      border-radius: var(--r-full);
+      font-size: 0.8125rem; font-weight: 600; color: var(--n-700);
+      cursor: pointer; transition: var(--ease);
+      font-family: var(--font);
+      white-space: nowrap;
+    }
+    .quick-chip:hover { border-color: var(--primary-400); color: var(--primary); background: var(--primary-50); }
+
+    /* Input area */
+    .chat-input-area {
+      padding: 16px 28px 20px;
+      background: white;
+      border-top: 1px solid var(--border-light);
+      flex-shrink: 0;
+    }
+
+    .chat-input-row {
+      display: flex; gap: 10px; align-items: flex-end;
+    }
+
+    .chat-input {
+      flex: 1;
+      padding: 12px 16px;
+      border: 1.5px solid var(--border);
+      border-radius: var(--r-lg);
+      font-size: 0.9375rem;
+      font-family: var(--font);
+      color: var(--n-900);
+      resize: none;
+      outline: none;
+      transition: var(--ease);
+      max-height: 120px;
+      direction: rtl;
+    }
+    .chat-input:focus { border-color: var(--primary-400); box-shadow: 0 0 0 3px rgba(82,183,136,0.1); }
+
+    .chat-send {
+      width: 44px; height: 44px;
+      background: var(--primary); color: white;
+      border: none; border-radius: var(--r-full);
+      cursor: pointer; font-size: 1.125rem;
+      display: flex; align-items: center; justify-content: center;
+      transition: var(--ease); flex-shrink: 0;
+      font-family: var(--font);
+    }
+    .chat-send:hover { background: var(--primary-700); transform: scale(1.05); }
+    .chat-send:disabled { background: var(--n-300); cursor: not-allowed; transform: none; }
+
+    @media (max-width: 900px) {
+      .owner-sidebar { display: none; }
+      .chat-header, .chat-messages, .chat-input-area, .chat-chips { padding-inline: 16px; }
+    }
+  </style>
+</head>
+<body>
+
+<nav class="nav" id="main-nav">
+  <div class="container nav-inner">
+    <a href="../index.html" class="nav-logo">
+      <div class="nav-logo-mark"><svg viewBox="0 0 24 24"><path d="M12 3L2 9l10 6 10-6-10-6z"/><path d="M2 15l10 6 10-6"/></svg></div>
+      <span class="nav-logo-text">ASSET<span>-LINK</span></span>
+    </a>
+    <div class="nav-links">
+      <a href="../marketplace.html" class="nav-link">שוק הציוד</a>
+      <a href="dashboard.html" class="nav-link">לוח בקרה</a>
+      <a href="listings.html" class="nav-link">הנכסים שלי</a>
+      <a href="ai-chat.html" class="nav-link active">AI יועץ</a>
+    </div>
+    <div class="nav-actions"></div>
+  </div>
+</nav>
+
+<div class="owner-layout">
+
+  <!-- Sidebar -->
+  <aside class="owner-sidebar">
+    <div class="sidebar-user">
+      <div class="sidebar-user-avatar">🌾</div>
+      <div class="sidebar-user-name" id="sidebar-username">קיבוץ שדה אליהו</div>
+      <div class="sidebar-user-role">משכיר · חבר מאז 2024</div>
+    </div>
+    <div class="sidebar-section-label">ניהול</div>
+    <a href="dashboard.html" class="sidebar-nav-item"><span class="sidebar-nav-icon">📊</span> סקירה כללית</a>
+    <a href="listings.html" class="sidebar-nav-item"><span class="sidebar-nav-icon">🚜</span> הנכסים שלי</a>
+    <a href="dashboard.html" class="sidebar-nav-item"><span class="sidebar-nav-icon">📅</span> הזמנות <span class="badge badge-warning" style="margin-inline-start:auto;font-size:0.7rem;padding:2px 7px;">3</span></a>
+    <a href="dashboard.html" class="sidebar-nav-item"><span class="sidebar-nav-icon">💰</span> הכנסות</a>
+    <div class="sidebar-section-label">כלים</div>
+    <a href="ai-chat.html" class="sidebar-nav-item active"><span class="sidebar-nav-icon">🤖</span> AI יועץ</a>
+    <a href="../list-equipment.html" class="sidebar-nav-item"><span class="sidebar-nav-icon">➕</span> הוסף ציוד</a>
+    <div class="sidebar-section-label">חשבון</div>
+    <a href="../auth.html" class="sidebar-nav-item" onclick="Auth.logout(); return false;"><span class="sidebar-nav-icon">🚪</span> יציאה</a>
+  </aside>
+
+  <!-- Chat -->
+  <div class="chat-main">
+
+    <div class="chat-header">
+      <div class="chat-header-avatar">🤖</div>
+      <div>
+        <div class="chat-header-name">ASSET-LINK AI יועץ</div>
+        <div class="chat-header-status"><span class="status-dot"></span> מחובר · זמין 24/7</div>
+      </div>
+    </div>
+
+    <div class="chat-messages" id="chat-messages">
+      <!-- Welcome message injected by JS -->
+    </div>
+
+    <!-- Quick action chips -->
+    <div class="chat-chips">
+      <button class="quick-chip" data-msg="כיצד לתמחר את הטרקטור שלי?">💰 כיצד לתמחר?</button>
+      <button class="quick-chip" data-msg="מתי לפרסם ציוד לעונת הקציר?">📅 מתי לפרסם?</button>
+      <button class="quick-chip" data-msg="מה בביקוש עכשיו בשוק?">🔥 מה בביקוש?</button>
+      <button class="quick-chip" data-msg="כמה אוכל להרוויח מהטרקטור שלי?">📊 חישוב הכנסה</button>
+      <button class="quick-chip" data-msg="ספר לי על הביטוח בפלטפורמה">🛡️ ביטוח</button>
+    </div>
+
+    <div class="chat-input-area">
+      <div class="chat-input-row">
+        <textarea
+          id="chat-input"
+          class="chat-input"
+          placeholder="שאל את היועץ שלך... (Enter לשליחה)"
+          rows="1"
+        ></textarea>
+        <button class="chat-send" id="chat-send" title="שלח">➤</button>
+      </div>
+      <div style="font-size:0.75rem;color:var(--n-400);margin-top:8px;text-align:center;">
+        AI מבוסס על נתוני שוק ישראלי. ייעוץ כללי בלבד.
+      </div>
+    </div>
+  </div>
+</div>
+
+<script src="../js/main.js"></script>
+<script src="../js/auth.js"></script>
+<script src="../js/ai-chat.js"></script>
+<script>
+document.addEventListener('DOMContentLoaded', () => {
+  const user = Auth.getUser();
+  const name = user ? user.name : 'משכיר';
+  if (document.getElementById('sidebar-username')) {
+    document.getElementById('sidebar-username').textContent = name;
+  }
+
+  // Inject welcome message
+  const container = document.getElementById('chat-messages');
+  addMessage('ai',
+    `שלום ${name}! אני היועץ החכם של ASSET-LINK. 🌾\n\nאני כאן לעזור לך למקסם את ההכנסה מהציוד שלך. אני מכיר את שוק הציוד הישראלי לעומק — עונות, תמחור, ביקוש לפי אזור, וניהול השכרות.\n\n**מה תרצה לדעת?**`,
+    container
+  );
+
+  // Auto-resize textarea
+  const input = document.getElementById('chat-input');
+  input.addEventListener('input', function() {
+    this.style.height = 'auto';
+    this.style.height = Math.min(this.scrollHeight, 120) + 'px';
+  });
+});
+</script>
+</body>
+</html>

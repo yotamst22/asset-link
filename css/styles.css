@@ -1033,6 +1033,75 @@ p  { color: var(--n-600); line-height: 1.75; }
 .p-6  { padding: 24px; }
 .p-8  { padding: 32px; }
 
+/* ---- Nav user pill (auth state) ---- */
+.nav-user-pill {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 5px 12px;
+  background: var(--primary-50);
+  border-radius: var(--r-full);
+  border: 1px solid var(--primary-200);
+}
+
+.nav-user-name {
+  font-size: 0.875rem;
+  font-weight: 600;
+  color: var(--primary);
+  max-width: 140px;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+/* ---- Toast notification ---- */
+#al-toast {
+  font-family: var(--font);
+  direction: rtl;
+}
+
+/* ---- RTL logical property fixes ---- */
+.filter-count {
+  margin-inline-start: auto;
+}
+
+.hs-seg {
+  border-inline-start: 1px solid var(--border-light);
+}
+.hs-seg:first-child { border-inline-start: none; }
+
+.hs-btn {
+  border-radius: 0 var(--r-xl) var(--r-xl) 0;
+}
+
+/* RTL: hs-btn sits on the left in LTR, right in RTL */
+[dir="rtl"] .hs-btn {
+  border-radius: var(--r-xl) 0 0 var(--r-xl);
+}
+
+.dash-nav-item.active {
+  border-inline-end: 3px solid var(--primary);
+}
+
+/* ---- Booking date inputs ---- */
+.date-input-styled::-webkit-calendar-picker-indicator {
+  cursor: pointer;
+  opacity: 0.6;
+}
+.date-input-styled::-webkit-calendar-picker-indicator:hover {
+  opacity: 1;
+}
+
+/* ---- Chat message formatting ---- */
+.chat-text strong { font-weight: 700; }
+.chat-text br { line-height: 1.8; }
+
+/* ---- Owner/Admin sidebar active border ---- */
+.sidebar-nav-item.active,
+.admin-nav-item.active {
+  border-inline-end: 3px solid var(--primary);
+}
+
 /* ---- Responsive ---- */
 @media (max-width: 1024px) {
   .footer-grid { grid-template-columns: 1fr 1fr; gap: 40px; }
@@ -1046,7 +1115,47 @@ p  { color: var(--n-600); line-height: 1.75; }
   .grid-4, .grid-3 { grid-template-columns: repeat(2, 1fr); }
   .grid-2 { grid-template-columns: 1fr; }
   .hs-seg:nth-child(2), .hs-seg:nth-child(3) { display: none; }
-  .hs-btn { border-radius: 0 var(--r-xl) var(--r-xl) 0; }
+  [dir="rtl"] .hs-btn { border-radius: var(--r-xl) 0 0 var(--r-xl); }
   .hero-search { border-radius: var(--r-lg); }
   .dash-sidebar { display: none; }
+
+  /* listing.html grid stacks on mobile */
+  .listing-layout { grid-template-columns: 1fr !important; }
+
+  /* marketplace sidebar collapses */
+  .filter-sidebar {
+    display: none;
+    position: fixed;
+    inset-block: var(--nav-h) 0;
+    inset-inline-end: 0;
+    width: 280px;
+    z-index: 800;
+    overflow-y: auto;
+    box-shadow: var(--sh-xl);
+    background: var(--surface);
+    padding: 16px;
+  }
+  .filter-sidebar.open { display: block; }
+
+  /* Nav user pill compact */
+  .nav-user-name { max-width: 80px; }
+}
+
+@media (max-width: 900px) {
+  /* Dashboard sidebar → hamburger on mobile */
+  .owner-sidebar,
+  .admin-sidebar {
+    display: none;
+    position: fixed;
+    inset-block: var(--nav-h) 0;
+    inset-inline-end: 0;
+    z-index: 800;
+    overflow-y: auto;
+    box-shadow: var(--sh-xl);
+  }
+  .owner-sidebar.open,
+  .admin-sidebar.open { display: block; }
+
+  .owner-main,
+  .admin-main { padding: 20px 16px; }
 }
