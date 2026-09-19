@@ -201,18 +201,27 @@ function renderCards() {
   const observer = new IntersectionObserver(entries => {
     entries.forEach(entry => {
       if (entry.isIntersecting) {
-        entry.target.classList.add('is-visible');
+        entry.target.style.opacity = '1';
+        entry.target.style.transform = 'translateY(0)';
         observer.unobserve(entry.target);
       }
     });
-  }, { threshold: 0.05 });
+  }, { threshold: 0.02, rootMargin: '0px 0px 100px 0px' });
 
   grid.querySelectorAll('.equipment-card').forEach((card, i) => {
     card.style.opacity = '0';
     card.style.transform = 'translateY(20px)';
-    card.style.transition = `opacity 0.4s ease ${i * 0.05}s, transform 0.4s ease ${i * 0.05}s`;
+    card.style.transition = `opacity 0.4s ease ${i * 0.06}s, transform 0.4s ease ${i * 0.06}s`;
     observer.observe(card);
   });
+
+  // Fallback: if cards still invisible after 600ms, force show them
+  setTimeout(() => {
+    grid.querySelectorAll('.equipment-card').forEach(card => {
+      card.style.opacity = '1';
+      card.style.transform = 'translateY(0)';
+    });
+  }, 600);
 
   // heart toggles
   grid.querySelectorAll('.ec-heart').forEach(btn => {
