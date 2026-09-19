@@ -1,0 +1,11 @@
+{
+  "version": "0.0.1",
+  "configurations": [
+    {
+      "name": "asset-link",
+      "runtimeExecutable": "python3",
+      "runtimeArgs": ["-m", "http.server", "3400", "--directory", "/Users/yotam/asset-link"],
+      "port": 3400
+    }
+  ]
+}
