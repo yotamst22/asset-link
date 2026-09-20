@@ -312,9 +312,178 @@
       font-size: 3rem;
       display: none;
     }
+
+  /* Demo Banner */
+  .demo-banner {
+    background: #1B4332;
+    color: white;
+    text-align: center;
+    padding: 9px 48px 9px 16px;
+    font-size: 0.8125rem;
+    font-weight: 500;
+    direction: rtl;
+    position: relative;
+    z-index: 2000;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+    flex-wrap: wrap;
+    line-height: 1.4;
+  }
+  .demo-banner a { color: #74C69D; text-decoration: underline; font-weight: 700; }
+  .demo-banner a:hover { color: #B7E4C7; }
+  .demo-banner strong { color: #B7E4C7; }
+  .demo-banner-note { color: rgba(255,255,255,0.6); font-size: 0.75rem; }
+  .demo-banner-dot {
+    width: 6px; height: 6px;
+    background: #74C69D;
+    border-radius: 50%;
+    flex-shrink: 0;
+    animation: pulse 2s infinite;
+  }
+  .demo-banner-close {
+    position: absolute;
+    left: 10px;
+    top: 50%;
+    transform: translateY(-50%);
+    background: none;
+    border: none;
+    color: rgba(255,255,255,0.5);
+    font-size: 0.875rem;
+    cursor: pointer;
+    padding: 4px 6px;
+    line-height: 1;
+  }
+  .demo-banner-close:hover { color: white; }
+
+  /* Live Demo Modal */
+  .demo-modal-overlay {
+    display: none;
+    position: fixed;
+    inset: 0;
+    background: rgba(0,0,0,0.65);
+    z-index: 9000;
+    align-items: center;
+    justify-content: center;
+    padding: 20px;
+    backdrop-filter: blur(4px);
+  }
+  .demo-modal-overlay.open { display: flex; }
+
+  .demo-modal {
+    background: white;
+    border-radius: 20px;
+    padding: 40px 36px 36px;
+    max-width: 560px;
+    width: 100%;
+    direction: rtl;
+    position: relative;
+    box-shadow: 0 24px 64px rgba(0,0,0,0.35);
+    animation: modalSlideIn 0.25s ease;
+  }
+  @keyframes modalSlideIn {
+    from { transform: translateY(24px); opacity: 0; }
+    to   { transform: translateY(0);    opacity: 1; }
+  }
+
+  .demo-modal-close {
+    position: absolute;
+    top: 16px;
+    left: 16px;
+    background: var(--n-100);
+    border: none;
+    border-radius: 50%;
+    width: 32px; height: 32px;
+    font-size: 1rem;
+    cursor: pointer;
+    display: flex; align-items: center; justify-content: center;
+    color: var(--n-500);
+  }
+  .demo-modal-close:hover { background: var(--n-200); color: var(--n-900); }
+
+  .demo-modal-title {
+    font-size: 1.5rem;
+    font-weight: 900;
+    color: var(--n-900);
+    margin-bottom: 6px;
+    letter-spacing: -0.02em;
+  }
+  .demo-modal-sub {
+    color: var(--n-500);
+    font-size: 0.9375rem;
+    margin-bottom: 28px;
+    line-height: 1.6;
+  }
+
+  .demo-persona-list { display: flex; flex-direction: column; gap: 12px; }
+
+  .demo-persona-card {
+    display: flex;
+    align-items: center;
+    gap: 16px;
+    padding: 18px 20px;
+    border: 2px solid var(--border);
+    border-radius: 14px;
+    text-decoration: none;
+    color: inherit;
+    transition: all 0.18s ease;
+    background: white;
+  }
+  .demo-persona-card:hover {
+    border-color: var(--primary-400);
+    background: var(--primary-50);
+    transform: translateX(-4px);
+    box-shadow: 0 4px 16px rgba(27,67,50,0.1);
+  }
+  .demo-persona-icon {
+    font-size: 2rem;
+    width: 52px; height: 52px;
+    background: var(--primary-100);
+    border-radius: 12px;
+    display: flex; align-items: center; justify-content: center;
+    flex-shrink: 0;
+  }
+  .demo-persona-body { flex: 1; }
+  .demo-persona-title {
+    font-size: 1.0625rem;
+    font-weight: 800;
+    color: var(--n-900);
+    margin-bottom: 3px;
+  }
+  .demo-persona-desc {
+    font-size: 0.8125rem;
+    color: var(--n-500);
+    line-height: 1.5;
+  }
+  .demo-persona-arrow {
+    font-size: 1.125rem;
+    color: var(--primary-400);
+    flex-shrink: 0;
+  }
+
+  .demo-modal-footer {
+    margin-top: 20px;
+    text-align: center;
+    font-size: 0.8rem;
+    color: var(--n-400);
+    padding-top: 16px;
+    border-top: 1px solid var(--border-light);
+  }
   </style>
 </head>
 <body>
+
+<!-- Demo Banner -->
+<div class="demo-banner" id="demo-banner">
+  <span class="demo-banner-dot"></span>
+  <strong>מצב הדגמה</strong> |
+  <a href="auth.html">כנס כמשכיר</a> ·
+  <a href="auth.html">כנס כשוכר</a> ·
+  <a href="admin/index.html">אדמין</a> |
+  <span class="demo-banner-note">כל הנתונים הם לצורך הדגמה בלבד</span>
+  <button class="demo-banner-close" onclick="document.getElementById('demo-banner').style.display='none'" title="סגור">✕</button>
+</div>
 
 <!-- Navigation -->
 <nav class="nav" id="main-nav">
@@ -360,6 +529,9 @@
       <a href="auth.html?role=owner" class="btn btn-secondary btn-lg btn-pill" style="border-color:rgba(255,255,255,0.4); color:white; background:rgba(255,255,255,0.1); backdrop-filter:blur(8px);">
         💰 &nbsp; אני רוצה להרוויח מהציוד שלי →
       </a>
+      <button onclick="document.getElementById('demo-modal-overlay').classList.add('open')" class="btn btn-lg btn-pill" style="border-color:rgba(255,255,255,0.5); color:white; background:rgba(255,255,255,0.15); backdrop-filter:blur(8px); cursor:pointer;">
+        🎯 &nbsp; הדגמה חיה
+      </button>
     </div>
     <div class="hero-search-wrap">
       <div class="hero-search">
@@ -881,6 +1053,47 @@
     </div>
   </div>
 </footer>
+
+<!-- Live Demo Modal -->
+<div class="demo-modal-overlay" id="demo-modal-overlay" onclick="if(event.target===this)this.classList.remove('open')">
+  <div class="demo-modal">
+    <button class="demo-modal-close" onclick="document.getElementById('demo-modal-overlay').classList.remove('open')">✕</button>
+    <div class="demo-modal-title">🎯 הדגמה חיה</div>
+    <p class="demo-modal-sub">
+      ASSET-LINK היא פלטפורמת שיתוף ציוד חקלאי ותעשייתי.<br>
+      בחר תפקיד לצפייה בדמו:
+    </p>
+    <div class="demo-persona-list">
+      <a href="marketplace.html" class="demo-persona-card">
+        <div class="demo-persona-icon">🔍</div>
+        <div class="demo-persona-body">
+          <div class="demo-persona-title">אני שוכר ציוד</div>
+          <div class="demo-persona-desc">חקלאי / מפעיל שמחפש ציוד להשכרה — עיין בשוק הציוד, סנן וחפש</div>
+        </div>
+        <div class="demo-persona-arrow">←</div>
+      </a>
+      <a href="auth.html?role=owner" class="demo-persona-card">
+        <div class="demo-persona-icon">🚜</div>
+        <div class="demo-persona-body">
+          <div class="demo-persona-title">אני משכיר ציוד</div>
+          <div class="demo-persona-desc">בעל ציוד / קיבוץ / חברה — נהל נכסים, הזמנות והכנסות</div>
+        </div>
+        <div class="demo-persona-arrow">←</div>
+      </a>
+      <a href="admin/index.html" class="demo-persona-card">
+        <div class="demo-persona-icon">⚙️</div>
+        <div class="demo-persona-body">
+          <div class="demo-persona-title">אני מנהל הפלטפורמה</div>
+          <div class="demo-persona-desc">פאנל אדמין — סטטיסטיקות, ניהול משתמשים ורישומים</div>
+        </div>
+        <div class="demo-persona-arrow">←</div>
+      </a>
+    </div>
+    <div class="demo-modal-footer">
+      כל הנתונים הם לצורך הדגמה בלבד · localStorage · אין בקאנד אמיתי
+    </div>
+  </div>
+</div>
 
 <script src="js/main.js"></script>
 <script src="js/auth.js"></script>

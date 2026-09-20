@@ -197,31 +197,22 @@ function renderCards() {
 
   grid.innerHTML = filteredListings.map(item => buildCard(item)).join('');
 
-  // Animate cards in with IntersectionObserver
-  const observer = new IntersectionObserver(entries => {
-    entries.forEach(entry => {
-      if (entry.isIntersecting) {
-        entry.target.style.opacity = '1';
-        entry.target.style.transform = 'translateY(0)';
-        observer.unobserve(entry.target);
-      }
-    });
-  }, { threshold: 0.02, rootMargin: '0px 0px 100px 0px' });
-
+  // Set initial state for animation
   grid.querySelectorAll('.equipment-card').forEach((card, i) => {
     card.style.opacity = '0';
     card.style.transform = 'translateY(20px)';
     card.style.transition = `opacity 0.4s ease ${i * 0.06}s, transform 0.4s ease ${i * 0.06}s`;
-    observer.observe(card);
   });
 
-  // Fallback: if cards still invisible after 600ms, force show them
-  setTimeout(() => {
-    grid.querySelectorAll('.equipment-card').forEach(card => {
-      card.style.opacity = '1';
-      card.style.transform = 'translateY(0)';
+  // Make ALL cards visible immediately — no scroll needed
+  requestAnimationFrame(() => {
+    grid.querySelectorAll('.equipment-card').forEach((card, i) => {
+      setTimeout(() => {
+        card.style.opacity = '1';
+        card.style.transform = 'translateY(0)';
+      }, i * 80);
     });
-  }, 600);
+  });
 
   // heart toggles
   grid.querySelectorAll('.ec-heart').forEach(btn => {

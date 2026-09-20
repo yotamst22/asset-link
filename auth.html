@@ -216,6 +216,7 @@
       text-align: right;
     }
     .demo-btn:hover { border-color: var(--primary-400); color: var(--primary); background: var(--primary-50); }
+    .demo-btn-active { border-color: var(--primary) !important; color: var(--primary) !important; background: var(--primary-50) !important; box-shadow: 0 0 0 3px rgba(27,67,50,0.1); }
     .demo-btn-icon { font-size: 1.125rem; }
     .demo-btn-text { flex: 1; }
     .demo-btn-badge { font-size: 0.75rem; font-weight: 700; padding: 2px 8px; border-radius: var(--r-full); }
@@ -233,9 +234,34 @@
       .auth-brand { display: none; }
       .auth-form-panel { padding: 32px 20px; align-items: flex-start; padding-top: 48px; }
     }
+
+    /* Demo Banner */
+    .demo-banner { background:#1B4332; color:white; text-align:center; padding:9px 48px 9px 16px; font-size:0.8125rem; font-weight:500; direction:rtl; position:relative; z-index:2000; display:flex; align-items:center; justify-content:center; gap:8px; flex-wrap:wrap; line-height:1.4; }
+    .demo-banner a { color:#74C69D; text-decoration:underline; font-weight:700; }
+    .demo-banner a:hover { color:#B7E4C7; }
+    .demo-banner strong { color:#B7E4C7; }
+    .demo-banner-note { color:rgba(255,255,255,0.6); font-size:0.75rem; }
+    .demo-banner-dot { width:6px; height:6px; background:#74C69D; border-radius:50%; flex-shrink:0; }
+    .demo-banner-close { position:absolute; left:10px; top:50%; transform:translateY(-50%); background:none; border:none; color:rgba(255,255,255,0.5); font-size:0.875rem; cursor:pointer; padding:4px 6px; line-height:1; }
+    .demo-banner-close:hover { color:white; }
+
+    /* Push auth-page down to account for banner */
+    .auth-page { padding-top: 0; }
   </style>
 </head>
 <body>
+
+<!-- Demo Banner -->
+<div class="demo-banner" id="demo-banner">
+  <span class="demo-banner-dot"></span>
+  <strong>מצב הדגמה</strong> |
+  <a href="auth.html">כנס כמשכיר</a> ·
+  <a href="auth.html">כנס כשוכר</a> ·
+  <a href="admin/index.html">אדמין</a> |
+  <span class="demo-banner-note">כל הנתונים הם לצורך הדגמה בלבד</span>
+  <button class="demo-banner-close" onclick="document.getElementById('demo-banner').style.display='none'" title="סגור">✕</button>
+</div>
+
 <div class="auth-page">
 
   <!-- Brand Panel -->
@@ -311,12 +337,12 @@
         <div class="demo-section">
           <div class="demo-title">כניסה מהירה לדמו</div>
           <div class="demo-btns">
-            <button class="demo-btn" onclick="Auth.loginDemo('owner')">
+            <button class="demo-btn" data-role="owner" onclick="Auth.loginDemo('owner')">
               <span class="demo-btn-icon">🚜</span>
               <span class="demo-btn-text">כנס כמשכיר</span>
               <span class="demo-btn-badge badge badge-green">קיבוץ שדה אליהו</span>
             </button>
-            <button class="demo-btn" onclick="Auth.loginDemo('renter')">
+            <button class="demo-btn" data-role="renter" onclick="Auth.loginDemo('renter')">
               <span class="demo-btn-icon">🔍</span>
               <span class="demo-btn-text">כנס כשוכר</span>
               <span class="demo-btn-badge badge badge-earth">ישראל ישראלי</span>
@@ -412,12 +438,17 @@ document.querySelectorAll('.auth-tab-btn').forEach(btn => {
 
 // Check for role param
 const params = new URLSearchParams(window.location.search);
-if (params.get('role') === 'owner') {
+const preRole = params.get('role');
+if (preRole === 'owner') {
   document.querySelectorAll('.auth-tab-btn').forEach(b => {
     b.classList.toggle('active', b.dataset.tab === 'register');
   });
   document.querySelectorAll('.auth-panel').forEach(p => p.classList.remove('active'));
   document.getElementById('panel-register').classList.add('active');
+}
+// Highlight the matching demo button if role param present
+if (preRole) {
+  document.querySelector(`.demo-btn[data-role="${preRole}"]`)?.classList.add('demo-btn-active');
 }
 
 // If already logged in, redirect

@@ -178,9 +178,30 @@
       .owner-main { padding: 20px 16px; }
       .insights-grid { grid-template-columns: 1fr; }
     }
+
+    /* Demo Banner */
+    .demo-banner { background:#1B4332; color:white; text-align:center; padding:9px 48px 9px 16px; font-size:0.8125rem; font-weight:500; direction:rtl; position:relative; z-index:2000; display:flex; align-items:center; justify-content:center; gap:8px; flex-wrap:wrap; line-height:1.4; }
+    .demo-banner a { color:#74C69D; text-decoration:underline; font-weight:700; }
+    .demo-banner a:hover { color:#B7E4C7; }
+    .demo-banner strong { color:#B7E4C7; }
+    .demo-banner-note { color:rgba(255,255,255,0.6); font-size:0.75rem; }
+    .demo-banner-dot { width:6px; height:6px; background:#74C69D; border-radius:50%; flex-shrink:0; }
+    .demo-banner-close { position:absolute; left:10px; top:50%; transform:translateY(-50%); background:none; border:none; color:rgba(255,255,255,0.5); font-size:0.875rem; cursor:pointer; padding:4px 6px; line-height:1; }
+    .demo-banner-close:hover { color:white; }
   </style>
 </head>
 <body>
+
+<!-- Demo Banner -->
+<div class="demo-banner" id="demo-banner">
+  <span class="demo-banner-dot"></span>
+  <strong>מצב הדגמה</strong> |
+  <a href="../auth.html">כנס כמשכיר</a> ·
+  <a href="../auth.html">כנס כשוכר</a> ·
+  <a href="../admin/index.html">אדמין</a> |
+  <span class="demo-banner-note">כל הנתונים הם לצורך הדגמה בלבד</span>
+  <button class="demo-banner-close" onclick="document.getElementById('demo-banner').style.display='none'" title="סגור">✕</button>
+</div>
 
 <!-- Nav -->
 <nav class="nav" id="main-nav">
